@@ -1,3 +1,3 @@
-import { startServer } from './routes/server'
+import { startServer } from './server'
 
 startServer()

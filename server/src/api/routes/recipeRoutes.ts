@@ -4,30 +4,50 @@ import { prisma } from '../lib/prisma'
 
 // TODO: Refactor route so that it satisfies OAuth logic
 export async function recipeRoutes(app: FastifyInstance) {
-  app.get('/recipies', async () => {
-    return await prisma.recipe.findMany
-  })
-
-  app.get('/recipies/:id', async (req) => {
+  app.get('/users/:userId/recipies', async (req) => {
     const paramsSchema = z.object({
-      id: z.string().uuid(),
+      userId: z.string().uuid(),
     })
 
-    const { id } = paramsSchema.parse(req.params)
+    const { userId } = paramsSchema.parse(req.params)
 
-    return await prisma.recipe.findUniqueOrThrow({
+    return await prisma.recipe.findMany({
       where: {
-        id,
+        userId,
       },
     })
   })
 
-  app.post('/recipies', async (req) => {
+  app.get('/users/:userId/recipies/:id', async (req) => {
+    const paramsSchema = z.object({
+      userId: z.string().uuid(),
+      id: z.coerce.number(),
+    })
+
+    const { userId, id } = paramsSchema.parse(req.params)
+
+    return await prisma.recipe.findUniqueOrThrow({
+      where: {
+        userId_id: {
+          userId,
+          id,
+        },
+      },
+    })
+  })
+
+  app.post('/users/:userId/recipies', async (req) => {
+    const paramsSchema = z.object({
+      userId: z.string().uuid(),
+    })
+
+    const { userId } = paramsSchema.parse(req.params)
+
     const bodySchema = z.object({
       name: z.string(),
       ingredients: z.array(z.string()),
       instructions: z.string().nullable(),
-      portionsQtd: z.number().nullable(),
+      portionsQtd: z.coerce.number().nullable(),
       timeToCook: z.string().nullable(),
       mediaLinks: z.array(z.string()),
     })
@@ -50,21 +70,23 @@ export async function recipeRoutes(app: FastifyInstance) {
         portionsQtd,
         timeToCook,
         mediaLinks,
+        userId,
       },
     })
   })
 
-  app.patch('/recipies/:id', async (req) => {
+  app.put('/users/:userId/recipies/:id', async (req) => {
     const paramsSchema = z.object({
-      id: z.string().uuid(),
+      userId: z.string().uuid(),
+      id: z.coerce.number(),
     })
-    const { id } = paramsSchema.parse(req.params)
+    const { userId, id } = paramsSchema.parse(req.params)
 
     const bodySchema = z.object({
-      name: z.string(),
+      name: z.string().optional(),
       ingredients: z.array(z.string()).optional(),
       instructions: z.string().nullable().optional(),
-      portionsQtd: z.number().nullable().optional(),
+      portionsQtd: z.coerce.number().nullable().optional(),
       timeToCook: z.string().nullable().optional(),
       mediaLinks: z.array(z.string()).optional(),
     })
@@ -80,7 +102,10 @@ export async function recipeRoutes(app: FastifyInstance) {
     // res.code(200).send()
     return await prisma.recipe.update({
       where: {
-        id,
+        userId_id: {
+          userId,
+          id,
+        },
       },
       data: {
         name,
@@ -93,19 +118,21 @@ export async function recipeRoutes(app: FastifyInstance) {
     })
   })
 
-  app.delete('/recipies/:id', async (req, res) => {
+  app.delete('/users/:userId/recipies/:id', async (req) => {
     const paramsSchema = z.object({
-      id: z.string().uuid(),
+      userId: z.string().uuid(),
+      id: z.coerce.number(),
     })
 
-    const { id } = paramsSchema.parse(req.params)
+    const { userId, id } = paramsSchema.parse(req.params)
 
     await prisma.recipe.delete({
       where: {
-        id,
+        userId_id: {
+          userId,
+          id,
+        },
       },
     })
-
-    res.code(204).send()
   })
 }

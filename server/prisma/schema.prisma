@@ -19,11 +19,13 @@ model User {
   imageURL  String
   createdAt DateTime @default(now())
 
-  recipies Recipe[]
+  categories Category[]
+  recipies   Recipe[]
+  todos      Todo[]
 }
 
 model Recipe {
-  id           String   @id @default(uuid())
+  id           Int      @id @default(autoincrement())
   name         String?
   ingredients  String[]
   instructions String?
@@ -32,6 +34,41 @@ model Recipe {
   mediaLinks   String[]
   createdAt    DateTime @default(now())
 
-  User   User?   @relation(fields: [userId], references: [id])
-  userId String?
+  User           User?            @relation(fields: [userId], references: [id])
+  userId         String?
+  RecipeCategory RecipeCategory[]
+
+  @@unique([userId, id])
+}
+
+model Todo {
+  id        Int       @id @default(autoincrement())
+  title     String
+  isChecked Boolean   @default(false)
+  date      DateTime? @db.Date
+  User      User?     @relation(fields: [userId], references: [id])
+  userId    String?
+
+  @@unique([userId, id])
+}
+
+model Category {
+  id             Int              @id @default(autoincrement())
+  title          String
+  RecipeCategory RecipeCategory[]
+  User           User?            @relation(fields: [userId], references: [id])
+  userId         String?
+
+  @@unique([id, userId])
+}
+
+model RecipeCategory {
+  Recipe   Recipe? @relation(fields: [recipeId], references: [id])
+  recipeId Int
+
+  Category   Category? @relation(fields: [categoryId], references: [id])
+  categoryId Int
+
+  @@id([recipeId, categoryId])
+  @@unique([recipeId, categoryId])
 }
