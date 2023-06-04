@@ -9,3 +9,29 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id        String   @id @default(uuid())
+  firstName String
+  lastName  String
+  birthDate DateTime @db.Date
+  email     String
+  imageURL  String
+  createdAt DateTime @default(now())
+
+  recipies Recipe[]
+}
+
+model Recipe {
+  id           String   @id @default(uuid())
+  name         String?
+  ingredients  String[]
+  instructions String?
+  portionsQtd  Int?
+  timeToCook   String?
+  mediaLinks   String[]
+  createdAt    DateTime @default(now())
+
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+}
