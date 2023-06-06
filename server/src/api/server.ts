@@ -1,6 +1,6 @@
 import fastify from 'fastify'
 import { categoryRoutes } from './routes/categoryRoutes'
-import { recipeCategoryRoutes } from './routes/recipeCategoryRutes'
+import { recipeCategoryRoutes } from './routes/recipeCategoryRoutes'
 import { recipeRoutes } from './routes/recipeRoutes'
 import { todoRoutes } from './routes/todoRoutes'
 import { userRoutes } from './routes/userRoutes'

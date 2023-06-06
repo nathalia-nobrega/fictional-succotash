@@ -1,8 +1,8 @@
-type Recipe = {
+export interface Recipe {
   name: string
   ingredients: string[]
-  instructions: string[]
+  instructions: string
   portionsQtd: number
   timeToCook: string
-  mediaLinks: string
+  mediaLinks: string[]
 }

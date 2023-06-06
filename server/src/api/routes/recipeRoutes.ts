@@ -1,40 +1,15 @@
 import { FastifyInstance } from 'fastify'
 import { z } from 'zod'
+import { RecipeController } from '../controllers/recipeController'
 import { prisma } from '../lib/prisma'
+
+const recipeController = new RecipeController()
 
 // TODO: Refactor route so that it satisfies OAuth logic
 export async function recipeRoutes(app: FastifyInstance) {
-  app.get('/users/:userId/recipies', async (req) => {
-    const paramsSchema = z.object({
-      userId: z.string().uuid(),
-    })
+  app.get('/users/:userId/recipies', recipeController.getAllRecipies)
 
-    const { userId } = paramsSchema.parse(req.params)
-
-    return await prisma.recipe.findMany({
-      where: {
-        userId,
-      },
-    })
-  })
-
-  app.get('/users/:userId/recipies/:id', async (req) => {
-    const paramsSchema = z.object({
-      userId: z.string().uuid(),
-      id: z.coerce.number(),
-    })
-
-    const { userId, id } = paramsSchema.parse(req.params)
-
-    return await prisma.recipe.findUniqueOrThrow({
-      where: {
-        userId_id: {
-          userId,
-          id,
-        },
-      },
-    })
-  })
+  app.get('/users/:userId/recipies/:id', recipeController.getRecipeById)
 
   app.post('/users/:userId/recipies', async (req) => {
     const paramsSchema = z.object({
