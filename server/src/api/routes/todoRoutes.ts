@@ -4,7 +4,7 @@ import { prisma } from '../lib/prisma'
 
 // TODO: Remove :id from the URL params to satisfy the logic with OAuth
 export async function todoRoutes(app: FastifyInstance) {
-  app.get('/users/:userId/todos', async (req) => {
+  app.get('/', async (req) => {
     const paramsSchema = z.object({
       userId: z.string().uuid(),
     })
@@ -18,7 +18,7 @@ export async function todoRoutes(app: FastifyInstance) {
     })
   })
 
-  app.get('/users/:userId/todos/:id', async (req) => {
+  app.get('/:id', async (req) => {
     const paramsSchema = z.object({
       userId: z.string().uuid(),
       id: z.coerce.number(),
@@ -36,7 +36,7 @@ export async function todoRoutes(app: FastifyInstance) {
     })
   })
 
-  app.post('/users/:userId/todos', async (req) => {
+  app.post('/', async (req) => {
     const paramsSchema = z.object({
       userId: z.string().uuid(),
     })
@@ -61,7 +61,7 @@ export async function todoRoutes(app: FastifyInstance) {
     })
   })
 
-  app.put('/users/:userId/todos/:id', async (req) => {
+  app.put('/:id', async (req) => {
     const paramsSchema = z.object({
       userId: z.string().uuid(),
       id: z.coerce.number(),
@@ -91,7 +91,7 @@ export async function todoRoutes(app: FastifyInstance) {
     })
   })
 
-  app.delete('/users/:userId/todos/:id', async (req) => {
+  app.delete('/:id', async (req) => {
     const paramsSchema = z.object({
       userId: z.string().uuid(),
       id: z.coerce.number(),

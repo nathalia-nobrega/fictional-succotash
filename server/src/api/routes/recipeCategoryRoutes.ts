@@ -4,11 +4,11 @@ import { prisma } from '../lib/prisma'
 
 // TODO: Refactor route so that it satisfies OAuth logic
 export async function recipeCategoryRoutes(app: FastifyInstance) {
-  app.get('/recipiesCategories', async (req, res) => {
+  app.get('/', async (req, res) => {
     return await prisma.recipeCategory.findMany()
   })
 
-  app.post('/recipiesCategories', async (req, res) => {
+  app.post('/', async (req, res) => {
     const bodySchema = z.object({
       recipeId: z.number(),
       categoryId: z.number(),
@@ -26,7 +26,7 @@ export async function recipeCategoryRoutes(app: FastifyInstance) {
     return prisma.recipeCategory.findMany()
   })
 
-  app.delete('/recipiesCategories/:categoryId/:recipeId', async (req, res) => {
+  app.delete('/:categoryId/:recipeId', async (req, res) => {
     const paramsSchema = z.object({
       recipeId: z.number(),
       categoryId: z.number(),

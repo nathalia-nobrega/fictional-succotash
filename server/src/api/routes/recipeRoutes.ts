@@ -7,11 +7,11 @@ const recipeController = new RecipeController()
 
 // TODO: Refactor route so that it satisfies OAuth logic
 export async function recipeRoutes(app: FastifyInstance) {
-  app.get('/users/:userId/recipies', recipeController.getAllRecipies)
+  app.get('/', recipeController.getAllRecipies)
 
-  app.get('/users/:userId/recipies/:id', recipeController.getRecipeById)
+  app.get('/:id', recipeController.getRecipeById)
 
-  app.post('/users/:userId/recipies', async (req) => {
+  app.post('/', async (req) => {
     const paramsSchema = z.object({
       userId: z.string().uuid(),
     })
@@ -50,7 +50,7 @@ export async function recipeRoutes(app: FastifyInstance) {
     })
   })
 
-  app.put('/users/:userId/recipies/:id', async (req) => {
+  app.put('/:id', async (req) => {
     const paramsSchema = z.object({
       userId: z.string().uuid(),
       id: z.coerce.number(),
@@ -93,7 +93,7 @@ export async function recipeRoutes(app: FastifyInstance) {
     })
   })
 
-  app.delete('/users/:userId/recipies/:id', async (req) => {
+  app.delete('/:id', async (req) => {
     const paramsSchema = z.object({
       userId: z.string().uuid(),
       id: z.coerce.number(),

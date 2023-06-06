@@ -4,11 +4,11 @@ import { z } from 'zod'
 
 // TODO: Refactor route so that it satisfies OAuth logic
 export async function userRoutes(app: FastifyInstance) {
-  app.get('/users', async (req, res) => {
-    return await prisma.user.findMany
+  app.get('/', async (req, res) => {
+    return await prisma.user.findMany()
   })
 
-  app.get('/users/:id', async (req, res) => {
+  app.get('/:id', async (req, res) => {
     const paramsSchema = z.object({
       id: z.string().uuid(),
     })
@@ -21,7 +21,7 @@ export async function userRoutes(app: FastifyInstance) {
     })
   })
 
-  app.post('/users', async (req, res) => {
+  app.post('/', async (req, res) => {
     const bodySchema = z.object({
       firstName: z.string(),
       lastName: z.string(),
@@ -45,7 +45,7 @@ export async function userRoutes(app: FastifyInstance) {
     })
   })
 
-  app.delete('/users/:id', async (req, res) => {
+  app.delete('/:id', async (req, res) => {
     const paramsSchema = z.object({
       id: z.string().uuid(),
     })

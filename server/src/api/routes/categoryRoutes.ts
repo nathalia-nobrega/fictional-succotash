@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { prisma } from '../lib/prisma'
 
 export async function categoryRoutes(app: FastifyInstance) {
-  app.get('/users/:userId/categories', async (req) => {
+  app.get('/', async (req) => {
     const paramSchema = z.object({
       userId: z.string().uuid(),
     })
@@ -17,7 +17,7 @@ export async function categoryRoutes(app: FastifyInstance) {
     })
   })
 
-  app.get('/users/:userId/categories/:id', async (req) => {
+  app.get('/:id', async (req) => {
     const paramSchema = z.object({
       userId: z.string().uuid(),
       id: z.coerce.number(),
@@ -35,7 +35,7 @@ export async function categoryRoutes(app: FastifyInstance) {
     })
   })
 
-  app.post('/users/:userId/categories', async (req) => {
+  app.post('/', async (req) => {
     const paramSchema = z.object({
       userId: z.string().uuid(),
     })
@@ -56,7 +56,7 @@ export async function categoryRoutes(app: FastifyInstance) {
     })
   })
 
-  app.put('/users/:userId/categories/:id', async (req, res) => {
+  app.put('/:id', async (req, res) => {
     const paramSchema = z.object({
       userId: z.string().uuid(),
       id: z.coerce.number(),
@@ -83,7 +83,7 @@ export async function categoryRoutes(app: FastifyInstance) {
     })
   })
 
-  app.delete('/users/:userId/categories/:id', async (req) => {
+  app.delete('/:id', async (req) => {
     const paramSchema = z.object({
       userId: z.string().uuid(),
       id: z.coerce.number(),
