@@ -1,7 +1,7 @@
-import { Recipe } from '../../types/Recipe'
 import { prisma } from '../lib/prisma'
+import { CreateRecipeInput, UpdateRecipeInput } from '../schemas/recipeSchemas'
 
-export const getAll = async (userId: string) => {
+export async function getAll(userId: string) {
   return await prisma.recipe.findMany({
     where: {
       userId,
@@ -9,15 +9,58 @@ export const getAll = async (userId: string) => {
   })
 }
 
-export const getById = async (userId: string, id: number) => {
+export async function getById(userId: string, recipeId: number) {
   return await prisma.recipe.findUniqueOrThrow({
     where: {
       userId_id: {
         userId,
-        id,
+        id: recipeId,
       },
     },
   })
 }
-// TODO: Implement create
-// export const create = async (recipe: Recipe) => {}
+
+export async function create(data: CreateRecipeInput & { userId: string }) {
+  return await prisma.recipe.create({
+    data: {
+      ...data,
+    },
+  })
+}
+
+export async function update(
+  data: UpdateRecipeInput,
+  userId: string,
+  recipeId: number,
+) {
+  return await prisma.recipe.update({
+    where: {
+      userId_id: {
+        userId,
+        id: recipeId,
+      },
+    },
+    data: {
+      ...data,
+    },
+  })
+}
+
+export async function deleteById(userId: string, recipeId: number) {
+  // going to remove this from here and add it to recipeCategoryService
+
+  await prisma.recipeCategory.deleteMany({
+    where: {
+      recipeId,
+    },
+  })
+
+  await prisma.recipe.delete({
+    where: {
+      userId_id: {
+        userId,
+        id: recipeId,
+      },
+    },
+  })
+}
