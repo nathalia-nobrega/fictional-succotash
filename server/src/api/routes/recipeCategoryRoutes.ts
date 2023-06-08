@@ -46,13 +46,11 @@ export async function recipeCategoryRoutes(app: FastifyInstance) {
 
   // TODO: Refactor this
   app.get('/testing', async (req, res) => {
-    const categoryId = 2
     const sql =
-      Prisma.raw(`SELECT "Recipe"."name", "Recipe"."timeToCook", "Category".id
+      Prisma.raw(`SELECT "Recipe"."name", "Recipe"."timeToCook", "Category".title
     FROM "Recipe"
     JOIN "RecipeCategory" ON "RecipeCategory"."recipeId" = "Recipe".id
-    JOIN "Category" ON "Category".id = "RecipeCategory"."categoryId"
-    WHERE "Category".id = ${categoryId} `)
+    JOIN "Category" ON "Category".id = "RecipeCategory"."categoryId"`)
     return await prisma.$queryRaw`${sql}`
   })
 }
