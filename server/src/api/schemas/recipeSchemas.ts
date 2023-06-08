@@ -40,9 +40,12 @@ const recipiesResponseSchema = z.array(recipeResponseSchema)
 export type CreateRecipeInput = z.infer<typeof createRecipeSchema>
 export type UpdateRecipeInput = z.infer<typeof updateRecipeSchema>
 
-export const { schemas: recipeSchemas, $ref } = buildJsonSchemas({
-  createRecipeSchema,
-  updateRecipeSchema,
-  recipeResponseSchema,
-  recipiesResponseSchema,
-})
+export const { schemas: recipeSchemas, $ref } = buildJsonSchemas(
+  {
+    createRecipeSchema,
+    updateRecipeSchema,
+    recipeResponseSchema,
+    recipiesResponseSchema,
+  },
+  { $id: 'recipeSchemaID' },
+)

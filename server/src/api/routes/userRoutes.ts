@@ -1,63 +1,44 @@
 import { FastifyInstance } from 'fastify'
-import { prisma } from '../lib/prisma'
-import { z } from 'zod'
+import { UserController } from '../controllers/userControllers'
+import { $ref } from '../schemas/userSchema'
 
 // TODO: Refactor route so that it satisfies OAuth logic
 export async function userRoutes(app: FastifyInstance) {
-  app.get('/', async (req, res) => {
-    return await prisma.user.findMany()
-  })
+  const userController = new UserController()
 
-  app.get('/:id', async (req, res) => {
-    const paramsSchema = z.object({
-      id: z.string().uuid(),
-    })
+  app.get(
+    '/',
+    { schema: { response: { 200: $ref('usersResponseSchema') } } },
+    userController.getAllUsers,
+  )
 
-    const { id } = paramsSchema.parse(req.params)
-    return await prisma.user.findUniqueOrThrow({
-      where: {
-        id,
+  app.get(
+    '/:userId',
+    { schema: { response: { 200: $ref('userResponseSchema') } } },
+    userController.getUserById,
+  )
+
+  app.post(
+    '/',
+    {
+      schema: {
+        body: $ref('createUserSchema'),
+        response: { 201: $ref('userResponseSchema') },
       },
-    })
-  })
+    },
+    userController.createUser,
+  )
 
-  app.post('/', async (req, res) => {
-    const bodySchema = z.object({
-      firstName: z.string(),
-      lastName: z.string(),
-      birthDate: z.coerce.date(),
-      email: z.string().email(),
-      imageURL: z.string().url(),
-    })
-
-    const { firstName, lastName, birthDate, email, imageURL } =
-      bodySchema.parse(req.body)
-
-    // res.code(201).send()
-    return await prisma.user.create({
-      data: {
-        firstName,
-        lastName,
-        birthDate,
-        email,
-        imageURL,
+  app.put(
+    '/',
+    {
+      schema: {
+        body: $ref('updateUserSchema'),
+        response: { 201: $ref('userResponseSchema') },
       },
-    })
-  })
+    },
+    userController.updateUser,
+  )
 
-  app.delete('/:id', async (req, res) => {
-    const paramsSchema = z.object({
-      id: z.string().uuid(),
-    })
-
-    const { id } = paramsSchema.parse(req.params)
-
-    await prisma.user.delete({
-      where: {
-        id,
-      },
-    })
-
-    res.code(204).send()
-  })
+  app.delete('/:userId', userController.deleteUser)
 }
