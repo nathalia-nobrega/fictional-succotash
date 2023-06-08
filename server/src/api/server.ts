@@ -6,11 +6,12 @@ import { todoRoutes } from './routes/todoRoutes'
 import { userRoutes } from './routes/userRoutes'
 import { recipeSchemas } from './schemas/recipeSchemas'
 import { userSchema } from './schemas/userSchema'
+import { categorySchema } from './schemas/categorySchema'
 
 export async function startServer() {
   const app = fastify()
 
-  for (const schema of [...recipeSchemas, ...userSchema]) {
+  for (const schema of [...recipeSchemas, ...userSchema, ...categorySchema]) {
     app.addSchema(schema)
   }
 

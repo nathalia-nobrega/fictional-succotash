@@ -1,6 +1,7 @@
 import { FastifyInstance } from 'fastify'
 import { z } from 'zod'
 import { prisma } from '../lib/prisma'
+import { Prisma } from '@prisma/client'
 
 // TODO: Refactor route so that it satisfies OAuth logic
 export async function recipeCategoryRoutes(app: FastifyInstance) {
@@ -13,7 +14,6 @@ export async function recipeCategoryRoutes(app: FastifyInstance) {
       recipeId: z.number(),
       categoryId: z.number(),
     })
-
     const { recipeId, categoryId } = bodySchema.parse(req.body)
 
     await prisma.recipeCategory.create({
@@ -42,5 +42,17 @@ export async function recipeCategoryRoutes(app: FastifyInstance) {
         },
       },
     })
+  })
+
+  // TODO: Refactor this
+  app.get('/testing', async (req, res) => {
+    const categoryId = 2
+    const sql =
+      Prisma.raw(`SELECT "Recipe"."name", "Recipe"."timeToCook", "Category".id
+    FROM "Recipe"
+    JOIN "RecipeCategory" ON "RecipeCategory"."recipeId" = "Recipe".id
+    JOIN "Category" ON "Category".id = "RecipeCategory"."categoryId"
+    WHERE "Category".id = ${categoryId} `)
+    return await prisma.$queryRaw`${sql}`
   })
 }
