@@ -1,48 +1,41 @@
-import { FastifyInstance } from 'fastify'
-import { z } from 'zod'
-import { prisma } from '../lib/prisma'
 import { Prisma } from '@prisma/client'
+import { FastifyInstance } from 'fastify'
+import { RecipeCategoryCategoryController } from '../controllers/recipeCategoryController'
+import { prisma } from '../lib/prisma'
+import { $ref } from '../schemas/recipeCategorySchema'
 
 // TODO: Refactor route so that it satisfies OAuth logic
 export async function recipeCategoryRoutes(app: FastifyInstance) {
-  app.get('/', async (req, res) => {
-    return await prisma.recipeCategory.findMany()
-  })
+  const rcController = new RecipeCategoryCategoryController()
 
-  app.post('/', async (req, res) => {
-    const bodySchema = z.object({
-      recipeId: z.number(),
-      categoryId: z.number(),
-    })
-    const { recipeId, categoryId } = bodySchema.parse(req.body)
+  app.get(
+    '/',
+    { schema: { response: { 200: $ref('recipiesCategoriesResponseSchema') } } },
+    rcController.getAllRecipiesCategories,
+  )
 
-    await prisma.recipeCategory.create({
-      data: {
-        recipeId,
-        categoryId,
+  app.get(
+    '/:recipeId/:categoryId',
+    { schema: { response: { 200: $ref('recipeCategoryResponseSchema') } } },
+    rcController.getRecipeCategoryById,
+  )
+
+  app.post(
+    '/',
+    {
+      schema: {
+        body: $ref('createRecipeCategorySchema'),
+        response: { 201: $ref('recipeCategoryResponseSchema') },
       },
-    })
+    },
+    rcController.createRecipeCategory,
+  )
 
-    return prisma.recipeCategory.findMany()
-  })
-
-  app.delete('/:categoryId/:recipeId', async (req, res) => {
-    const paramsSchema = z.object({
-      recipeId: z.number(),
-      categoryId: z.number(),
-    })
-
-    const { recipeId, categoryId } = paramsSchema.parse(req.params)
-
-    return await prisma.recipeCategory.delete({
-      where: {
-        recipeId_categoryId: {
-          recipeId,
-          categoryId,
-        },
-      },
-    })
-  })
+  app.delete(
+    '/',
+    { schema: { body: $ref('deleteRecipeCategorySchema') } },
+    rcController.deleteRecipeCategory,
+  )
 
   // TODO: Refactor this
   app.get('/testing', async (req, res) => {

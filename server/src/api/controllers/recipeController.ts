@@ -1,5 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
+import { CreateRecipeInput, UpdateRecipeInput } from '../schemas/recipeSchemas'
 import {
   create,
   deleteById,
@@ -7,7 +8,6 @@ import {
   getById,
   update,
 } from '../services/recipeService'
-import { CreateRecipeInput, UpdateRecipeInput } from '../schemas/recipeSchemas'
 
 export class RecipeController {
   async getAllRecipies(req: FastifyRequest, res: FastifyReply) {

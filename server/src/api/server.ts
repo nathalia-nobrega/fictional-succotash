@@ -8,6 +8,7 @@ import { recipeSchemas } from './schemas/recipeSchemas'
 import { userSchema } from './schemas/userSchema'
 import { categorySchema } from './schemas/categorySchema'
 import { todoSchema } from './schemas/todoSchema'
+import { recipeCategorySchema } from './schemas/recipeCategorySchema'
 
 export async function startServer() {
   const app = fastify()
@@ -17,6 +18,7 @@ export async function startServer() {
     ...userSchema,
     ...categorySchema,
     ...todoSchema,
+    ...recipeCategorySchema,
   ]) {
     app.addSchema(schema)
   }
