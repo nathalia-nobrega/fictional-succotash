@@ -45,7 +45,7 @@ export class CategoryController {
     const { userId } = paramSchema.parse(req.params)
 
     const data = { ...req.body, userId }
-
+    res.code(201)
     return create(data)
   }
 
@@ -71,7 +71,7 @@ export class CategoryController {
     })
 
     const { userId, id } = paramSchema.parse(req.params)
-
+    res.code(204)
     return deleteById(userId, id)
   }
 }

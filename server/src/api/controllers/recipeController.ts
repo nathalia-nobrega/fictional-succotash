@@ -42,6 +42,7 @@ export class RecipeController {
     const { userId } = paramsSchema.parse(req.params)
 
     const data = { ...req.body, userId }
+    res.code(201)
     create(data)
   }
 
@@ -68,6 +69,7 @@ export class RecipeController {
     })
 
     const { userId, id } = paramsSchema.parse(req.params)
+    res.code(204)
     deleteById(userId, id)
   }
 }

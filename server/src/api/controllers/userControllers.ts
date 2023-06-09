@@ -30,16 +30,8 @@ export class UserController {
     const data = { ...req.body }
 
     console.log({ ...req.body })
+    res.code(201)
     return create(data)
-  }
-
-  async deleteUser(req: FastifyRequest, res: FastifyReply) {
-    const paramsSchema = z.object({
-      userId: z.string().uuid(),
-    })
-
-    const { userId } = paramsSchema.parse(req.params)
-    deleteById(userId)
   }
 
   async updateUser(
@@ -53,6 +45,18 @@ export class UserController {
     const { userId } = paramsSchema.parse(req.params)
 
     const data = { ...req.body, userId }
+    res.code(204)
+
     return update(data)
+  }
+
+  async deleteUser(req: FastifyRequest, res: FastifyReply) {
+    const paramsSchema = z.object({
+      userId: z.string().uuid(),
+    })
+
+    const { userId } = paramsSchema.parse(req.params)
+    res.code(204)
+    deleteById(userId)
   }
 }

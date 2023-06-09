@@ -32,6 +32,7 @@ export class RecipeCategoryCategoryController {
     res: FastifyReply,
   ) {
     const data = { ...req.body }
+    res.code(201)
     create(data)
   }
 
@@ -40,6 +41,7 @@ export class RecipeCategoryCategoryController {
     res: FastifyReply,
   ) {
     const data = { ...req.body }
+    res.code(204)
     deleteById(data)
   }
 }
