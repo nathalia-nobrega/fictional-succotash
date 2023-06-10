@@ -1,6 +1,10 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { z } from 'zod'
-import { CreateRecipeInput, UpdateRecipeInput } from '../schemas/recipeSchemas'
+import {
+  CreateRecipeInput,
+  IdParamsInput,
+  UpdateRecipeInput,
+} from '../schemas/recipeSchemas'
+import { UserIdParamsInput } from '../schemas/userSchema'
 import {
   create,
   deleteById,
@@ -10,65 +14,48 @@ import {
 } from '../services/recipeService'
 
 export class RecipeController {
-  async getAllRecipies(req: FastifyRequest, res: FastifyReply) {
-    const paramsSchema = z.object({
-      userId: z.string().uuid(),
-    })
-
-    const { userId } = paramsSchema.parse(req.params)
-
-    return getAll(userId)
+  async getAllRecipies(
+    req: FastifyRequest<{ Params: UserIdParamsInput }>,
+    res: FastifyReply,
+  ) {
+    const params = req.params.userId
+    return getAll(params)
   }
 
-  async getRecipeById(req: FastifyRequest, res: FastifyReply) {
-    const paramsSchema = z.object({
-      userId: z.string().uuid(),
-      id: z.coerce.number(),
-    })
-
-    const { userId, id } = paramsSchema.parse(req.params)
-
+  async getRecipeById(
+    req: FastifyRequest<{ Params: IdParamsInput }>,
+    res: FastifyReply,
+  ) {
+    const { userId, id } = { ...req.params }
     return getById(userId, id)
   }
 
   async createRecipe(
-    req: FastifyRequest<{ Body: CreateRecipeInput }>,
+    req: FastifyRequest<{ Body: CreateRecipeInput; Params: UserIdParamsInput }>,
     res: FastifyReply,
   ) {
-    const paramsSchema = z.object({
-      userId: z.string().uuid(),
-    })
-
-    const { userId } = paramsSchema.parse(req.params)
-
+    const { userId } = { ...req.params }
     const data = { ...req.body, userId }
     res.code(201)
-    create(data)
+    return create(data)
   }
 
   async updateRecipe(
-    req: FastifyRequest<{ Body: UpdateRecipeInput }>,
+    req: FastifyRequest<{ Body: UpdateRecipeInput; Params: IdParamsInput }>,
     res: FastifyReply,
   ) {
-    const paramsSchema = z.object({
-      userId: z.string().uuid(),
-      id: z.coerce.number(),
-    })
-
-    const { userId, id } = paramsSchema.parse(req.params)
+    const { userId, id } = { ...req.params }
 
     const data = { ...req.body }
 
-    update(data, userId, id)
+    return update(data, userId, id)
   }
 
-  async deleteRecipe(req: FastifyRequest, res: FastifyReply) {
-    const paramsSchema = z.object({
-      userId: z.string().uuid(),
-      id: z.coerce.number(),
-    })
-
-    const { userId, id } = paramsSchema.parse(req.params)
+  async deleteRecipe(
+    req: FastifyRequest<{ Params: IdParamsInput }>,
+    res: FastifyReply,
+  ) {
+    const { userId, id } = { ...req.params }
     res.code(204)
     deleteById(userId, id)
   }

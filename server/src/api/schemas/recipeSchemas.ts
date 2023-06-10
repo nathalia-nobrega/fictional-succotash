@@ -31,6 +31,7 @@ const createRecipeSchema = z.object({
 const updateRecipeSchema = z.object({
   ...updateRecipeInput,
 })
+
 const recipeResponseSchema = z.object({
   ...recipeInput,
   ...recipeGenerated,

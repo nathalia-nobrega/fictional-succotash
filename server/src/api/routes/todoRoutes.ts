@@ -1,19 +1,29 @@
 import { FastifyInstance } from 'fastify'
 import { TodoController } from '../controllers/todoController'
 import { $ref } from '../schemas/todoSchema'
+import { $ref as uRef } from '../schemas/userSchema'
 
-// TODO: Remove :id from the URL params to satisfy the logic with OAuth
 export async function todoRoutes(app: FastifyInstance) {
   const todoController = new TodoController()
   app.get(
     '/',
-    { schema: { response: { 200: $ref('todosResponseSchema') } } },
+    {
+      schema: {
+        response: { 200: $ref('todosResponseSchema') },
+        params: uRef('userIdSchema'),
+      },
+    },
     todoController.getAllTodos,
   )
 
   app.get(
     '/:id',
-    { schema: { response: { 200: $ref('todoResponseSchema') } } },
+    {
+      schema: {
+        response: { 200: $ref('todoResponseSchema') },
+        params: uRef('idSchema'),
+      },
+    },
     todoController.getTodoById,
   )
   app.post(
@@ -22,6 +32,7 @@ export async function todoRoutes(app: FastifyInstance) {
       schema: {
         body: $ref('createTodoSchema'),
         response: { 201: $ref('todoResponseSchema') },
+        params: uRef('userIdSchema'),
       },
     },
     todoController.createTodo,
@@ -33,10 +44,15 @@ export async function todoRoutes(app: FastifyInstance) {
       schema: {
         body: $ref('updateTodoSchema'),
         response: { 201: $ref('todoResponseSchema') },
+        params: uRef('idSchema'),
       },
     },
     todoController.updateTodo,
   )
 
-  app.delete('/:id', todoController.deleteTodoById)
+  app.delete(
+    '/:id',
+    { schema: { params: uRef('idSchema') } },
+    todoController.deleteTodoById,
+  )
 }

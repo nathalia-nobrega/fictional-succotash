@@ -1,6 +1,7 @@
 import { FastifyInstance } from 'fastify'
 import { RecipeController } from '../controllers/recipeController'
 import { $ref } from '../schemas/recipeSchemas'
+import { $ref as uRef } from '../schemas/userSchema'
 
 const recipeController = new RecipeController()
 
@@ -13,6 +14,7 @@ export async function recipeRoutes(app: FastifyInstance) {
         response: {
           200: $ref('recipiesResponseSchema'),
         },
+        params: uRef('userIdSchema'),
       },
     },
     recipeController.getAllRecipies,
@@ -25,6 +27,7 @@ export async function recipeRoutes(app: FastifyInstance) {
         response: {
           200: $ref('recipeResponseSchema'),
         },
+        params: uRef('idSchema'),
       },
     },
     recipeController.getRecipeById,
@@ -36,6 +39,7 @@ export async function recipeRoutes(app: FastifyInstance) {
       schema: {
         body: $ref('createRecipeSchema'),
         response: { 201: $ref('recipeResponseSchema') },
+        params: uRef('userIdSchema'),
       },
     },
     recipeController.createRecipe,
@@ -47,10 +51,15 @@ export async function recipeRoutes(app: FastifyInstance) {
       schema: {
         body: $ref('updateRecipeSchema'),
         response: { 201: $ref('recipeResponseSchema') },
+        params: uRef('idSchema'),
       },
     },
     recipeController.updateRecipe,
   )
 
-  app.delete('/:id', recipeController.deleteRecipe)
+  app.delete(
+    '/:id',
+    { schema: { params: uRef('idSchema') } },
+    recipeController.deleteRecipe,
+  )
 }

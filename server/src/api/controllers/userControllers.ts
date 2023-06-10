@@ -1,26 +1,28 @@
-import { FastifyRequest, FastifyReply } from 'fastify'
+import { FastifyReply, FastifyRequest } from 'fastify'
 import {
-  getAll,
-  getById,
+  CreateUserInput,
+  UpdateUserInput,
+  UserIdParamsInput,
+} from '../schemas/userSchema'
+import {
   create,
   deleteById,
+  getAll,
+  getById,
   update,
 } from '../services/userService'
-import { z } from 'zod'
-import { CreateUserInput, UpdateUserInput } from '../schemas/userSchema'
 
 export class UserController {
   async getAllUsers(req: FastifyRequest, res: FastifyReply) {
     return getAll()
   }
 
-  async getUserById(req: FastifyRequest, res: FastifyReply) {
-    const paramsSchema = z.object({
-      userId: z.string().uuid(),
-    })
-    const { userId } = paramsSchema.parse(req.params)
-
-    return getById(userId)
+  async getUserById(
+    req: FastifyRequest<{ Params: UserIdParamsInput }>,
+    res: FastifyReply,
+  ) {
+    const params = { ...req.params }
+    return getById(params.userId)
   }
 
   async createUser(
@@ -29,33 +31,27 @@ export class UserController {
   ) {
     const data = { ...req.body }
 
-    console.log({ ...req.body })
     res.code(201)
     return create(data)
   }
 
   async updateUser(
-    req: FastifyRequest<{ Body: UpdateUserInput }>,
+    req: FastifyRequest<{ Body: UpdateUserInput; Params: UserIdParamsInput }>,
     res: FastifyReply,
   ) {
-    const paramsSchema = z.object({
-      userId: z.string().uuid(),
-    })
-
-    const { userId } = paramsSchema.parse(req.params)
-
+    const userId = req.params.userId
     const data = { ...req.body, userId }
+
     res.code(204)
 
     return update(data)
   }
 
-  async deleteUser(req: FastifyRequest, res: FastifyReply) {
-    const paramsSchema = z.object({
-      userId: z.string().uuid(),
-    })
-
-    const { userId } = paramsSchema.parse(req.params)
+  async deleteUser(
+    req: FastifyRequest<{ Params: UserIdParamsInput }>,
+    res: FastifyReply,
+  ) {
+    const userId = req.params.userId
     res.code(204)
     deleteById(userId)
   }

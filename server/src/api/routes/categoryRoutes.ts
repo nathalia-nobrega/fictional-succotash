@@ -1,18 +1,29 @@
 import { FastifyInstance } from 'fastify'
 import { CategoryController } from '../controllers/categoryController'
 import { $ref } from '../schemas/categorySchema'
+import { $ref as uRef } from '../schemas/userSchema'
 
 export async function categoryRoutes(app: FastifyInstance) {
   const categoryController = new CategoryController()
   app.get(
     '/',
-    { schema: { response: { 200: $ref('categoriesResponseSchema') } } },
+    {
+      schema: {
+        response: { 200: $ref('categoriesResponseSchema') },
+        params: uRef('userIdSchema'),
+      },
+    },
     categoryController.getAllCategories,
   )
 
   app.get(
     '/:id',
-    { schema: { response: { 200: $ref('categoryResponseSchema') } } },
+    {
+      schema: {
+        response: { 200: $ref('categoryResponseSchema') },
+        params: uRef('idSchema'),
+      },
+    },
     categoryController.getCategoryById,
   )
 
@@ -22,6 +33,7 @@ export async function categoryRoutes(app: FastifyInstance) {
       schema: {
         body: $ref('createCategorySchema'),
         response: { 201: $ref('categoryResponseSchema') },
+        params: uRef('userIdSchema'),
       },
     },
     categoryController.createCategory,
@@ -33,10 +45,15 @@ export async function categoryRoutes(app: FastifyInstance) {
       schema: {
         body: $ref('updateCategorySchema'),
         response: { 201: $ref('categoryResponseSchema') },
+        params: uRef('idSchema'),
       },
     },
     categoryController.updateCategory,
   )
 
-  app.delete('/:id', categoryController.deleteCategoryById)
+  app.delete(
+    '/:id',
+    { schema: { params: uRef('idSchema') } },
+    categoryController.deleteCategoryById,
+  )
 }

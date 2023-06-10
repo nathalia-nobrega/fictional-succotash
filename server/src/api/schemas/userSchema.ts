@@ -17,6 +17,14 @@ const updateUserInput = {
   imageURL: z.string().url().optional(),
 }
 
+const userIdParamsInput = {
+  userId: z.string().uuid(),
+}
+const idParamsInput = {
+  id: z.number(),
+  userId: z.string().uuid(),
+}
+
 const userGenerated = {
   id: z.string().uuid(),
   createdAt: z.coerce.date(),
@@ -28,6 +36,12 @@ const createUserSchema = z.object({
 const updateUserSchema = z.object({
   ...updateUserInput,
 })
+const idSchema = z.object({
+  ...idParamsInput,
+})
+const userIdSchema = z.object({
+  ...userIdParamsInput,
+})
 
 const userResponseSchema = z.object({
   ...createUserInput,
@@ -37,6 +51,8 @@ const usersResponseSchema = z.array(userResponseSchema)
 
 export type CreateUserInput = z.infer<typeof createUserSchema>
 export type UpdateUserInput = z.infer<typeof updateUserSchema>
+export type UserIdParamsInput = z.infer<typeof userIdSchema>
+export type IdParamsInput = z.infer<typeof idSchema>
 
 export const { schemas: userSchema, $ref } = buildJsonSchemas(
   {
@@ -44,6 +60,8 @@ export const { schemas: userSchema, $ref } = buildJsonSchemas(
     updateUserSchema,
     userResponseSchema,
     usersResponseSchema,
+    userIdSchema,
+    idSchema,
   },
   { $id: 'userSchemaID' },
 )

@@ -14,7 +14,12 @@ export async function userRoutes(app: FastifyInstance) {
 
   app.get(
     '/:userId',
-    { schema: { response: { 200: $ref('userResponseSchema') } } },
+    {
+      schema: {
+        response: { 200: $ref('userResponseSchema') },
+        params: $ref('userIdSchema'),
+      },
+    },
     userController.getUserById,
   )
 
@@ -30,15 +35,20 @@ export async function userRoutes(app: FastifyInstance) {
   )
 
   app.put(
-    '/',
+    '/:userId',
     {
       schema: {
         body: $ref('updateUserSchema'),
         response: { 201: $ref('userResponseSchema') },
+        params: $ref('userIdSchema'),
       },
     },
     userController.updateUser,
   )
 
-  app.delete('/:userId', userController.deleteUser)
+  app.delete(
+    '/:userId',
+    { schema: { params: $ref('userIdSchema') } },
+    userController.deleteUser,
+  )
 }

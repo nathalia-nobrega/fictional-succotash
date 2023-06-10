@@ -24,6 +24,7 @@ const createTodoSchema = z.object({
 const updateTodoSchema = z.object({
   ...updateTodoInput,
 })
+
 const todoResponseSchema = z.object({
   ...todoInput,
   ...todoGenerated,

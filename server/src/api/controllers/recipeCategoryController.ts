@@ -1,5 +1,4 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { z } from 'zod'
 import {
   CreateRecipeCategoryInput,
   DeleteRecipeCategoryInput,
@@ -16,13 +15,11 @@ export class RecipeCategoryCategoryController {
     return getAll()
   }
 
-  async getRecipeCategoryById(req: FastifyRequest, res: FastifyReply) {
-    const paramsSchema = z.object({
-      recipeId: z.coerce.number(),
-      categoryId: z.coerce.number(),
-    })
-
-    const { recipeId, categoryId } = paramsSchema.parse(req.params)
+  async getRecipeCategoryById(
+    req: FastifyRequest<{ Params: CreateRecipeCategoryInput }>,
+    res: FastifyReply,
+  ) {
+    const { recipeId, categoryId } = { ...req.params }
 
     return getById(recipeId, categoryId)
   }

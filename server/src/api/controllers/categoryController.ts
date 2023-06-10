@@ -1,5 +1,9 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { z } from 'zod'
+import {
+  CreateCategoryInput,
+  UpdateCategoryInput,
+} from '../schemas/categorySchema'
+import { IdParamsInput, UserIdParamsInput } from '../schemas/userSchema'
 import {
   create,
   deleteById,
@@ -7,42 +11,34 @@ import {
   getById,
   update,
 } from '../services/categoryService'
-import {
-  CreateCategoryInput,
-  UpdateCategoryInput,
-} from '../schemas/categorySchema'
 
 export class CategoryController {
-  async getAllCategories(req: FastifyRequest, res: FastifyReply) {
-    const paramSchema = z.object({
-      userId: z.string().uuid(),
-    })
-
-    const { userId } = paramSchema.parse(req.params)
+  async getAllCategories(
+    req: FastifyRequest<{ Params: UserIdParamsInput }>,
+    res: FastifyReply,
+  ) {
+    const { userId } = { ...req.params }
 
     return getAll(userId)
   }
 
-  async getCategoryById(req: FastifyRequest, res: FastifyReply) {
-    const paramSchema = z.object({
-      userId: z.string().uuid(),
-      id: z.coerce.number(),
-    })
-
-    const { userId, id } = paramSchema.parse(req.params)
+  async getCategoryById(
+    req: FastifyRequest<{ Params: IdParamsInput }>,
+    res: FastifyReply,
+  ) {
+    const { userId, id } = { ...req.params }
 
     return getById(userId, id)
   }
 
   async createCategory(
-    req: FastifyRequest<{ Body: CreateCategoryInput }>,
+    req: FastifyRequest<{
+      Body: CreateCategoryInput
+      Params: UserIdParamsInput
+    }>,
     res: FastifyReply,
   ) {
-    const paramSchema = z.object({
-      userId: z.string().uuid(),
-    })
-
-    const { userId } = paramSchema.parse(req.params)
+    const { userId } = { ...req.params }
 
     const data = { ...req.body, userId }
     res.code(201)
@@ -50,27 +46,20 @@ export class CategoryController {
   }
 
   async updateCategory(
-    req: FastifyRequest<{ Body: UpdateCategoryInput }>,
+    req: FastifyRequest<{ Body: UpdateCategoryInput; Params: IdParamsInput }>,
     res: FastifyReply,
   ) {
-    const paramSchema = z.object({
-      userId: z.string().uuid(),
-      id: z.coerce.number(),
-    })
-
-    const { userId, id } = paramSchema.parse(req.params)
+    const { userId, id } = { ...req.params }
 
     const data = { ...req.body }
     return update(data, userId, id)
   }
 
-  async deleteCategoryById(req: FastifyRequest, res: FastifyReply) {
-    const paramSchema = z.object({
-      userId: z.string().uuid(),
-      id: z.coerce.number(),
-    })
-
-    const { userId, id } = paramSchema.parse(req.params)
+  async deleteCategoryById(
+    req: FastifyRequest<{ Params: IdParamsInput }>,
+    res: FastifyReply,
+  ) {
+    const { userId, id } = { ...req.params }
     res.code(204)
     return deleteById(userId, id)
   }
