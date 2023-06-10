@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify'
-import { TodoController } from '../controllers/todoController'
-import { $ref } from '../schemas/todoSchema'
-import { $ref as uRef } from '../schemas/userSchema'
+import { TodoController } from './todoController'
+import { $ref } from './todoSchema'
+import { $ref as uRef } from '../user/userSchema'
 
 export async function todoRoutes(app: FastifyInstance) {
   const todoController = new TodoController()

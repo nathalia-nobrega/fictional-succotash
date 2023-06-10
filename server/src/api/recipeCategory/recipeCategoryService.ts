@@ -1,8 +1,8 @@
-import { prisma } from '../lib/prisma'
+import { prisma } from '../../lib/prisma'
 import {
   CreateRecipeCategoryInput,
   DeleteRecipeCategoryInput,
-} from '../schemas/recipeCategorySchema'
+} from './recipeCategorySchema'
 
 export async function getAll() {
   return await prisma.recipeCategory.findMany()

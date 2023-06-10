@@ -1,37 +1,29 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
-import {
-  CreateRecipeInput,
-  IdParamsInput,
-  UpdateRecipeInput,
-} from '../schemas/recipeSchemas'
-import { UserIdParamsInput } from '../schemas/userSchema'
-import {
-  create,
-  deleteById,
-  getAll,
-  getById,
-  update,
-} from '../services/recipeService'
+import { CreateTodoInput, UpdateTodoInput } from './todoSchema'
+import { IdParamsInput, UserIdParamsInput } from '../user/userSchema'
+import { create, deleteById, getAll, getById, update } from './todoService'
 
-export class RecipeController {
-  async getAllRecipies(
+export class TodoController {
+  async getAllTodos(
     req: FastifyRequest<{ Params: UserIdParamsInput }>,
     res: FastifyReply,
   ) {
-    const params = req.params.userId
-    return getAll(params)
+    const { userId } = { ...req.params }
+
+    return getAll(userId)
   }
 
-  async getRecipeById(
+  async getTodoById(
     req: FastifyRequest<{ Params: IdParamsInput }>,
     res: FastifyReply,
   ) {
     const { userId, id } = { ...req.params }
+
     return getById(userId, id)
   }
 
-  async createRecipe(
-    req: FastifyRequest<{ Body: CreateRecipeInput; Params: UserIdParamsInput }>,
+  async createTodo(
+    req: FastifyRequest<{ Body: CreateTodoInput; Params: UserIdParamsInput }>,
     res: FastifyReply,
   ) {
     const { userId } = { ...req.params }
@@ -40,23 +32,22 @@ export class RecipeController {
     return create(data)
   }
 
-  async updateRecipe(
-    req: FastifyRequest<{ Body: UpdateRecipeInput; Params: IdParamsInput }>,
+  async updateTodo(
+    req: FastifyRequest<{ Body: UpdateTodoInput; Params: IdParamsInput }>,
     res: FastifyReply,
   ) {
     const { userId, id } = { ...req.params }
 
     const data = { ...req.body }
-
     return update(data, userId, id)
   }
 
-  async deleteRecipe(
+  async deleteTodoById(
     req: FastifyRequest<{ Params: IdParamsInput }>,
     res: FastifyReply,
   ) {
     const { userId, id } = { ...req.params }
     res.code(204)
-    deleteById(userId, id)
+    return deleteById(userId, id)
   }
 }

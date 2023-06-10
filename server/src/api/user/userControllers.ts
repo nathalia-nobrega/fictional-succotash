@@ -3,14 +3,8 @@ import {
   CreateUserInput,
   UpdateUserInput,
   UserIdParamsInput,
-} from '../schemas/userSchema'
-import {
-  create,
-  deleteById,
-  getAll,
-  getById,
-  update,
-} from '../services/userService'
+} from './userSchema'
+import { create, deleteById, getAll, getById, update } from './userService'
 
 export class UserController {
   async getAllUsers(req: FastifyRequest, res: FastifyReply) {

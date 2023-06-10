@@ -1,5 +1,5 @@
-import { prisma } from '../lib/prisma'
-import { CreateRecipeInput, UpdateRecipeInput } from '../schemas/recipeSchemas'
+import { prisma } from '../../lib/prisma'
+import { CreateRecipeInput, UpdateRecipeInput } from './recipeSchemas'
 
 export async function getAll(userId: string) {
   return await prisma.recipe.findMany({

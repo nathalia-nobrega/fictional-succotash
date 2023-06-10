@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify'
-import { CategoryController } from '../controllers/categoryController'
-import { $ref } from '../schemas/categorySchema'
-import { $ref as uRef } from '../schemas/userSchema'
+import { CategoryController } from './categoryController'
+import { $ref } from './categorySchema'
+import { $ref as uRef } from '../user/userSchema'
 
 export async function categoryRoutes(app: FastifyInstance) {
   const categoryController = new CategoryController()

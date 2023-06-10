@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify'
-import { UserController } from '../controllers/userControllers'
-import { $ref } from '../schemas/userSchema'
+import { UserController } from './userControllers'
+import { $ref } from './userSchema'
 
 // TODO: Refactor route so that it satisfies OAuth logic
 export async function userRoutes(app: FastifyInstance) {

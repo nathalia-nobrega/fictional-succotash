@@ -2,13 +2,8 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import {
   CreateRecipeCategoryInput,
   DeleteRecipeCategoryInput,
-} from '../schemas/recipeCategorySchema'
-import {
-  create,
-  deleteById,
-  getAll,
-  getById,
-} from '../services/recipeCategoryService'
+} from './recipeCategorySchema'
+import { create, deleteById, getAll, getById } from './recipeCategoryService'
 
 export class RecipeCategoryCategoryController {
   async getAllRecipiesCategories(req: FastifyRequest, res: FastifyReply) {

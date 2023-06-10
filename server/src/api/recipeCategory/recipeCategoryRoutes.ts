@@ -1,8 +1,8 @@
 import { Prisma } from '@prisma/client'
 import { FastifyInstance } from 'fastify'
-import { RecipeCategoryCategoryController } from '../controllers/recipeCategoryController'
-import { prisma } from '../lib/prisma'
-import { $ref } from '../schemas/recipeCategorySchema'
+import { RecipeCategoryCategoryController } from './recipeCategoryController'
+import { prisma } from '../../lib/prisma'
+import { $ref } from './recipeCategorySchema'
 
 // TODO: Refactor route so that it satisfies OAuth logic
 export async function recipeCategoryRoutes(app: FastifyInstance) {

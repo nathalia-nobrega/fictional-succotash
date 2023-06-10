@@ -1,5 +1,5 @@
-import { prisma } from '../lib/prisma'
-import { CreateUserInput, UpdateUserInput } from '../schemas/userSchema'
+import { prisma } from '../../lib/prisma'
+import { CreateUserInput, UpdateUserInput } from './userSchema'
 
 export async function getAll() {
   return await prisma.user.findMany()

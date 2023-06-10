@@ -1,5 +1,5 @@
-import { prisma } from '../lib/prisma'
-import { CreateTodoInput, UpdateTodoInput } from '../schemas/todoSchema'
+import { prisma } from '../../lib/prisma'
+import { CreateTodoInput, UpdateTodoInput } from './todoSchema'
 
 export async function getAll(userId: string) {
   return await prisma.todo.findMany({

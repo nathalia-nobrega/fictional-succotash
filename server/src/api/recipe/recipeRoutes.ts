@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify'
-import { RecipeController } from '../controllers/recipeController'
-import { $ref } from '../schemas/recipeSchemas'
-import { $ref as uRef } from '../schemas/userSchema'
+import { RecipeController } from './recipeController'
+import { $ref } from './recipeSchemas'
+import { $ref as uRef } from '../user/userSchema'
 
 const recipeController = new RecipeController()
 

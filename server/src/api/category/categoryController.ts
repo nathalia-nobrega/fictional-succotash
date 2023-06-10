@@ -1,16 +1,10 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { CreateTodoInput, UpdateTodoInput } from '../schemas/todoSchema'
-import { IdParamsInput, UserIdParamsInput } from '../schemas/userSchema'
-import {
-  create,
-  deleteById,
-  getAll,
-  getById,
-  update,
-} from '../services/todoService'
+import { CreateCategoryInput, UpdateCategoryInput } from './categorySchema'
+import { IdParamsInput, UserIdParamsInput } from '../user/userSchema'
+import { create, deleteById, getAll, getById, update } from './categoryService'
 
-export class TodoController {
-  async getAllTodos(
+export class CategoryController {
+  async getAllCategories(
     req: FastifyRequest<{ Params: UserIdParamsInput }>,
     res: FastifyReply,
   ) {
@@ -19,7 +13,7 @@ export class TodoController {
     return getAll(userId)
   }
 
-  async getTodoById(
+  async getCategoryById(
     req: FastifyRequest<{ Params: IdParamsInput }>,
     res: FastifyReply,
   ) {
@@ -28,18 +22,22 @@ export class TodoController {
     return getById(userId, id)
   }
 
-  async createTodo(
-    req: FastifyRequest<{ Body: CreateTodoInput; Params: UserIdParamsInput }>,
+  async createCategory(
+    req: FastifyRequest<{
+      Body: CreateCategoryInput
+      Params: UserIdParamsInput
+    }>,
     res: FastifyReply,
   ) {
     const { userId } = { ...req.params }
+
     const data = { ...req.body, userId }
     res.code(201)
     return create(data)
   }
 
-  async updateTodo(
-    req: FastifyRequest<{ Body: UpdateTodoInput; Params: IdParamsInput }>,
+  async updateCategory(
+    req: FastifyRequest<{ Body: UpdateCategoryInput; Params: IdParamsInput }>,
     res: FastifyReply,
   ) {
     const { userId, id } = { ...req.params }
@@ -48,7 +46,7 @@ export class TodoController {
     return update(data, userId, id)
   }
 
-  async deleteTodoById(
+  async deleteCategoryById(
     req: FastifyRequest<{ Params: IdParamsInput }>,
     res: FastifyReply,
   ) {

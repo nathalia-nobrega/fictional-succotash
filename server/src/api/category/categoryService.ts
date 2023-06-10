@@ -1,8 +1,5 @@
-import { prisma } from '../lib/prisma'
-import {
-  CreateCategoryInput,
-  UpdateCategoryInput,
-} from '../schemas/categorySchema'
+import { prisma } from '../../lib/prisma'
+import { CreateCategoryInput, UpdateCategoryInput } from './categorySchema'
 
 export async function getAll(userId: string) {
   return await prisma.category.findMany({

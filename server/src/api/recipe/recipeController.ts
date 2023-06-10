@@ -1,66 +1,52 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
-import {
-  CreateCategoryInput,
-  UpdateCategoryInput,
-} from '../schemas/categorySchema'
-import { IdParamsInput, UserIdParamsInput } from '../schemas/userSchema'
-import {
-  create,
-  deleteById,
-  getAll,
-  getById,
-  update,
-} from '../services/categoryService'
+import { create, deleteById, getAll, getById, update } from './recipeService'
+import { IdParamsInput, UserIdParamsInput } from '../user/userSchema'
+import { CreateRecipeInput, UpdateRecipeInput } from './recipeSchemas'
 
-export class CategoryController {
-  async getAllCategories(
+export class RecipeController {
+  async getAllRecipies(
     req: FastifyRequest<{ Params: UserIdParamsInput }>,
     res: FastifyReply,
   ) {
-    const { userId } = { ...req.params }
-
-    return getAll(userId)
+    const params = req.params.userId
+    return getAll(params)
   }
 
-  async getCategoryById(
+  async getRecipeById(
     req: FastifyRequest<{ Params: IdParamsInput }>,
     res: FastifyReply,
   ) {
     const { userId, id } = { ...req.params }
-
     return getById(userId, id)
   }
 
-  async createCategory(
-    req: FastifyRequest<{
-      Body: CreateCategoryInput
-      Params: UserIdParamsInput
-    }>,
+  async createRecipe(
+    req: FastifyRequest<{ Body: CreateRecipeInput; Params: UserIdParamsInput }>,
     res: FastifyReply,
   ) {
     const { userId } = { ...req.params }
-
     const data = { ...req.body, userId }
     res.code(201)
     return create(data)
   }
 
-  async updateCategory(
-    req: FastifyRequest<{ Body: UpdateCategoryInput; Params: IdParamsInput }>,
+  async updateRecipe(
+    req: FastifyRequest<{ Body: UpdateRecipeInput; Params: IdParamsInput }>,
     res: FastifyReply,
   ) {
     const { userId, id } = { ...req.params }
 
     const data = { ...req.body }
+
     return update(data, userId, id)
   }
 
-  async deleteCategoryById(
+  async deleteRecipe(
     req: FastifyRequest<{ Params: IdParamsInput }>,
     res: FastifyReply,
   ) {
     const { userId, id } = { ...req.params }
     res.code(204)
-    return deleteById(userId, id)
+    deleteById(userId, id)
   }
 }
