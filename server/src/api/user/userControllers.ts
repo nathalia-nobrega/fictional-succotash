@@ -15,8 +15,8 @@ export class UserController {
     req: FastifyRequest<{ Params: UserIdParamsInput }>,
     res: FastifyReply,
   ) {
-    const params = { ...req.params }
-    return getById(params.userId)
+    const { userId } = { ...req.params }
+    return getById(userId)
   }
 
   async createUser(

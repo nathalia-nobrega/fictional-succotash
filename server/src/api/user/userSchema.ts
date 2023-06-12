@@ -10,11 +10,11 @@ const createUserInput = {
 }
 
 const updateUserInput = {
-  firstName: z.string().optional(),
-  lastName: z.string().optional(),
-  birthDate: z.coerce.date().optional(),
-  email: z.string().email().optional(),
-  imageURL: z.string().url().optional(),
+  firstName: z.string(),
+  lastName: z.string(),
+  birthDate: z.coerce.date(),
+  email: z.string().email(),
+  imageURL: z.string().url(),
 }
 
 const userIdParamsInput = {
@@ -27,15 +27,17 @@ const idParamsInput = {
 
 const userGenerated = {
   id: z.string().uuid(),
-  createdAt: z.coerce.date(),
+  createdAt: z.string().datetime(),
 }
 
 const createUserSchema = z.object({
   ...createUserInput,
 })
-const updateUserSchema = z.object({
-  ...updateUserInput,
-})
+const updateUserSchema = z
+  .object({
+    ...updateUserInput,
+  })
+  .partial()
 const idSchema = z.object({
   ...idParamsInput,
 })

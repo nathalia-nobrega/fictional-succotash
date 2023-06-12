@@ -2,28 +2,30 @@ import { buildJsonSchemas } from 'fastify-zod'
 import { z } from 'zod'
 
 const todoInput = {
-  title: z.string(),
+  title: z.string().trim().min(1),
   isChecked: z.boolean().default(false),
   date: z.coerce.date().nullable(),
 }
 
 const updateTodoInput = {
-  title: z.string().optional(),
-  isChecked: z.boolean().optional(),
-  date: z.coerce.date().optional(),
+  title: z.string(),
+  isChecked: z.boolean(),
+  date: z.coerce.date(),
 }
-
 const todoGenerated = {
   id: z.number(),
+  updatedAt: z.coerce.date(),
 }
 
 const createTodoSchema = z.object({
   ...todoInput,
 })
 
-const updateTodoSchema = z.object({
-  ...updateTodoInput,
-})
+const updateTodoSchema = z
+  .object({
+    ...updateTodoInput,
+  })
+  .partial()
 
 const todoResponseSchema = z.object({
   ...todoInput,

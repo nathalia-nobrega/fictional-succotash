@@ -2,7 +2,7 @@ import { buildJsonSchemas } from 'fastify-zod'
 import { z } from 'zod'
 
 const recipeInput = {
-  name: z.string(),
+  name: z.string().trim().min(1),
   ingredients: z.array(z.string()),
   instructions: z.string().nullable(),
   portionsQtd: z.coerce.number().nullable(),
@@ -11,26 +11,29 @@ const recipeInput = {
 }
 
 const updateRecipeInput = {
-  name: z.string().optional(),
-  ingredients: z.array(z.string()).optional(),
-  instructions: z.string().nullable().optional(),
-  portionsQtd: z.coerce.number().nullable().optional(),
-  timeToCook: z.string().nullable().optional(),
-  mediaLinks: z.array(z.string()).optional(),
+  name: z.string(),
+  ingredients: z.array(z.string()),
+  instructions: z.string().nullable(),
+  portionsQtd: z.coerce.number().nullable(),
+  timeToCook: z.string().nullable(),
+  mediaLinks: z.array(z.string()),
 }
 
 const recipeGenerated = {
   id: z.number(),
   createdAt: z.date(),
+  updatedAt: z.coerce.date(),
 }
 
 const createRecipeSchema = z.object({
   ...recipeInput,
 })
 
-const updateRecipeSchema = z.object({
-  ...updateRecipeInput,
-})
+const updateRecipeSchema = z
+  .object({
+    ...updateRecipeInput,
+  })
+  .partial()
 
 const recipeResponseSchema = z.object({
   ...recipeInput,

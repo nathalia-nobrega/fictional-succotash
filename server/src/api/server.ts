@@ -1,6 +1,6 @@
 import fastify from 'fastify'
 import { categoryRoutes } from './category/categoryRoutes'
-import { recipeCategoryRoutes } from './routes/recipeCategoryRoutes'
+import { recipeCategoryRoutes } from './recipeCategory/recipeCategoryRoutes'
 import { recipeRoutes } from './recipe/recipeRoutes'
 import { todoRoutes } from './todo/todoRoutes'
 import { userRoutes } from './user/userRoutes'
@@ -8,10 +8,12 @@ import { recipeSchemas } from './recipe/recipeSchemas'
 import { userSchema } from './user/userSchema'
 import { categorySchema } from './category/categorySchema'
 import { todoSchema } from './todo/todoSchema'
-import { recipeCategorySchema } from './schemas/recipeCategorySchema'
+import { recipeCategorySchema } from './recipeCategory/recipeCategorySchema'
 
 export async function startServer() {
-  const app = fastify()
+  const app = fastify({
+    logger: true,
+  })
 
   for (const schema of [
     ...recipeSchemas,

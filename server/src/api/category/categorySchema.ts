@@ -2,7 +2,7 @@ import { buildJsonSchemas } from 'fastify-zod'
 import { z } from 'zod'
 
 const createCategoryInput = {
-  title: z.string(),
+  title: z.string().trim().min(1),
 }
 const updateCategoryInput = {
   title: z.string(),
@@ -10,6 +10,7 @@ const updateCategoryInput = {
 
 const categoryGenerated = {
   id: z.coerce.number(),
+  updatedAt: z.coerce.date(),
 }
 
 const createCategorySchema = z.object({

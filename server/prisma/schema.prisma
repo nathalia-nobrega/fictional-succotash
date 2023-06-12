@@ -33,6 +33,7 @@ model Recipe {
   timeToCook   String?
   mediaLinks   String[]
   createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   User           User?            @relation(fields: [userId], references: [id])
   userId         String?
@@ -48,6 +49,7 @@ model Todo {
   date      DateTime? @db.Date
   User      User?     @relation(fields: [userId], references: [id])
   userId    String?
+  updatedAt DateTime  @updatedAt
 
   @@unique([userId, id])
 }
@@ -58,6 +60,7 @@ model Category {
   RecipeCategory RecipeCategory[]
   User           User?            @relation(fields: [userId], references: [id])
   userId         String?
+  updatedAt      DateTime         @updatedAt
 
   @@unique([id, userId])
 }
