@@ -1,0 +1,31 @@
+{
+  "expo": {
+    "name": "app",
+    "slug": "app",
+    "schema" : "ficsucc",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "https://i.redd.it/5b058xbyudra1.jpg",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
