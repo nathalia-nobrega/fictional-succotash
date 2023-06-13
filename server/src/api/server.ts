@@ -9,6 +9,7 @@ import { userSchema } from './user/userSchema'
 import { categorySchema } from './category/categorySchema'
 import { todoSchema } from './todo/todoSchema'
 import { recipeCategorySchema } from './recipeCategory/recipeCategorySchema'
+import { authRoute } from './auth/authRoute'
 
 export async function startServer() {
   const app = fastify({
@@ -25,21 +26,18 @@ export async function startServer() {
     app.addSchema(schema)
   }
 
-  app.register(userRoutes, { prefix: '/users' })
-  app.register(recipeRoutes, { prefix: '/users/:userId/recipies' })
-  app.register(todoRoutes, { prefix: '/users/:userId/todos' })
-  app.register(categoryRoutes, { prefix: '/users/:userId/categories' })
-  app.register(recipeCategoryRoutes, { prefix: '/recipiesCategories' })
+  app.register(userRoutes, { prefix: 'api/users' })
+  app.register(recipeRoutes, { prefix: 'api/users/:userId/recipies' })
+  app.register(todoRoutes, { prefix: 'api/users/:userId/todos' })
+  app.register(categoryRoutes, { prefix: 'api/users/:userId/categories' })
+  app.register(recipeCategoryRoutes, { prefix: 'api/recipiesCategories' })
+  app.register(authRoute, { prefix: '/api/oauth' })
 
   try {
-    await app
-      .listen({
-        port: 3333,
-        host: '0.0.0.0',
-      })
-      .then(() => {
-        console.log('Server running on http://localhost:3333')
-      })
+    await app.listen({
+      port: 3333,
+      host: '0.0.0.0',
+    })
   } catch (e) {
     console.error(e)
     process.exit(1)

@@ -4,7 +4,6 @@ import { z } from 'zod'
 const createUserInput = {
   firstName: z.string(),
   lastName: z.string(),
-  birthDate: z.coerce.date(),
   email: z.string().email(),
   imageURL: z.string().url(),
 }
@@ -12,7 +11,6 @@ const createUserInput = {
 const updateUserInput = {
   firstName: z.string(),
   lastName: z.string(),
-  birthDate: z.coerce.date(),
   email: z.string().email(),
   imageURL: z.string().url(),
 }

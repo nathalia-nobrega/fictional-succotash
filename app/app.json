@@ -1,8 +1,8 @@
 {
   "expo": {
     "name": "app",
-    "slug": "app",
-    "schema" : "ficsucc",
+    "slug": "recipeman-app",
+    "scheme" : "recipeman",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "https://i.redd.it/5b058xbyudra1.jpg",
