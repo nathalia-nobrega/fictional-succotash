@@ -5,12 +5,14 @@ import { $ref as uRef } from '../user/userSchema'
 
 export async function todoRoutes(app: FastifyInstance) {
   const todoController = new TodoController()
+  app.addHook('preHandler', async (request) => {
+    await request.jwtVerify
+  })
   app.get(
     '/',
     {
       schema: {
         response: { 200: $ref('todosResponseSchema') },
-        params: uRef('userIdSchema'),
       },
     },
     todoController.getAllTodos,
@@ -32,7 +34,6 @@ export async function todoRoutes(app: FastifyInstance) {
       schema: {
         body: $ref('createTodoSchema'),
         response: { 201: $ref('todoResponseSchema') },
-        params: uRef('userIdSchema'),
       },
     },
     todoController.createTodo,

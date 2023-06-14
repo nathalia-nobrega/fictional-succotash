@@ -1,15 +1,11 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
+import { IdParamsInput } from '../user/userSchema'
 import { CreateCategoryInput, UpdateCategoryInput } from './categorySchema'
-import { IdParamsInput, UserIdParamsInput } from '../user/userSchema'
 import { create, deleteById, getAll, getById, update } from './categoryService'
 
 export class CategoryController {
-  async getAllCategories(
-    req: FastifyRequest<{ Params: UserIdParamsInput }>,
-    res: FastifyReply,
-  ) {
-    const { userId } = { ...req.params }
-
+  async getAllCategories(req: FastifyRequest, res: FastifyReply) {
+    const userId = req.user.sub
     return getAll(userId)
   }
 
@@ -17,19 +13,21 @@ export class CategoryController {
     req: FastifyRequest<{ Params: IdParamsInput }>,
     res: FastifyReply,
   ) {
-    const { userId, id } = { ...req.params }
+    const { id } = { ...req.params }
+    const reqUser = req.user.sub
 
-    return getById(userId, id)
+    const category = await getById(reqUser, id)
+    if (category.userId !== reqUser) return res.code(401)
+    return category
   }
 
   async createCategory(
     req: FastifyRequest<{
       Body: CreateCategoryInput
-      Params: UserIdParamsInput
     }>,
     res: FastifyReply,
   ) {
-    const { userId } = { ...req.params }
+    const userId = req.user.sub
 
     const data = { ...req.body, userId }
     res.code(201)
@@ -40,8 +38,13 @@ export class CategoryController {
     req: FastifyRequest<{ Body: UpdateCategoryInput; Params: IdParamsInput }>,
     res: FastifyReply,
   ) {
-    const { userId, id } = { ...req.params }
+    const { id } = { ...req.params }
+    const reqUser = req.user.sub
 
+    const category = await getById(reqUser, id)
+    if (category.userId !== reqUser) return res.code(401)
+
+    const userId = reqUser
     const data = { ...req.body }
     return update(data, userId, id)
   }
@@ -50,8 +53,13 @@ export class CategoryController {
     req: FastifyRequest<{ Params: IdParamsInput }>,
     res: FastifyReply,
   ) {
-    const { userId, id } = { ...req.params }
+    const { id } = { ...req.params }
+    const reqUser = req.user.sub
+
+    const category = await getById(reqUser, id)
+    if (category.userId !== reqUser) return res.code(401)
+    const userId = reqUser
     res.code(204)
-    return deleteById(userId, id)
+    deleteById(userId, id)
   }
 }

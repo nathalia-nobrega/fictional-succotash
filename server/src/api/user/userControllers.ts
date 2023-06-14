@@ -1,9 +1,5 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
-import {
-  CreateUserInput,
-  UpdateUserInput,
-  UserIdParamsInput,
-} from './userSchema'
+import { CreateUserInput, UpdateUserInput } from './userSchema'
 import { create, deleteById, getAll, getById, update } from './userService'
 
 export class UserController {
@@ -11,11 +7,8 @@ export class UserController {
     return getAll()
   }
 
-  async getUserById(
-    req: FastifyRequest<{ Params: UserIdParamsInput }>,
-    res: FastifyReply,
-  ) {
-    const { userId } = { ...req.params }
+  async getUserById(req: FastifyRequest, res: FastifyReply) {
+    const userId = req.user.sub
     return getById(userId)
   }
 
@@ -30,10 +23,10 @@ export class UserController {
   }
 
   async updateUser(
-    req: FastifyRequest<{ Body: UpdateUserInput; Params: UserIdParamsInput }>,
+    req: FastifyRequest<{ Body: UpdateUserInput }>,
     res: FastifyReply,
   ) {
-    const userId = req.params.userId
+    const userId = req.user.sub
     const data = { ...req.body, userId }
 
     res.code(204)
@@ -41,11 +34,8 @@ export class UserController {
     return update(data)
   }
 
-  async deleteUser(
-    req: FastifyRequest<{ Params: UserIdParamsInput }>,
-    res: FastifyReply,
-  ) {
-    const userId = req.params.userId
+  async deleteUser(req: FastifyRequest, res: FastifyReply) {
+    const userId = req.user.sub
     res.code(204)
     deleteById(userId)
   }

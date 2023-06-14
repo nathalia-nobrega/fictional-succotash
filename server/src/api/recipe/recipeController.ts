@@ -1,31 +1,33 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { create, deleteById, getAll, getById, update } from './recipeService'
-import { IdParamsInput, UserIdParamsInput } from '../user/userSchema'
+import { IdParamsInput } from '../user/userSchema'
 import { CreateRecipeInput, UpdateRecipeInput } from './recipeSchemas'
 
 export class RecipeController {
-  async getAllRecipies(
-    req: FastifyRequest<{ Params: UserIdParamsInput }>,
-    res: FastifyReply,
-  ) {
-    const params = req.params.userId
-    return getAll(params)
+  async getAllRecipies(req: FastifyRequest, res: FastifyReply) {
+    const reqUser = req.user.sub
+
+    return await getAll(reqUser)
   }
 
   async getRecipeById(
     req: FastifyRequest<{ Params: IdParamsInput }>,
     res: FastifyReply,
   ) {
-    const { userId, id } = { ...req.params }
-    return getById(userId, id)
+    const { id } = { ...req.params }
+    const reqUser = req.user.sub
+    const recipe = await getById(reqUser, id)
+    if (recipe.userId !== reqUser) return res.code(401)
+
+    return recipe
   }
 
   async createRecipe(
-    req: FastifyRequest<{ Body: CreateRecipeInput; Params: UserIdParamsInput }>,
+    req: FastifyRequest<{ Body: CreateRecipeInput }>,
     res: FastifyReply,
   ) {
-    const { userId } = { ...req.params }
-    const data = { ...req.body, userId }
+    const reqUser = req.user.sub
+    const data = { ...req.body, userId: reqUser }
     res.code(201)
     return create(data)
   }
@@ -34,9 +36,13 @@ export class RecipeController {
     req: FastifyRequest<{ Body: UpdateRecipeInput; Params: IdParamsInput }>,
     res: FastifyReply,
   ) {
-    const { userId, id } = { ...req.params }
+    const { id } = { ...req.params }
+    const reqUser = req.user.sub
+    const recipe = await getById(reqUser, id)
+    if (recipe.userId !== reqUser) return res.code(401)
 
     const data = { ...req.body }
+    const userId = reqUser
 
     return update(data, userId, id)
   }
@@ -45,8 +51,11 @@ export class RecipeController {
     req: FastifyRequest<{ Params: IdParamsInput }>,
     res: FastifyReply,
   ) {
-    const { userId, id } = { ...req.params }
+    const { id } = { ...req.params }
+    const reqUser = req.user.sub
+    const recipe = await getById(reqUser, id)
+    if (recipe.userId !== reqUser) return res.code(401)
+    deleteById(reqUser, id)
     res.code(204)
-    deleteById(userId, id)
   }
 }

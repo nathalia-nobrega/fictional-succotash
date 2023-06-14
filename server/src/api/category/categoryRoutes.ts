@@ -5,12 +5,14 @@ import { $ref as uRef } from '../user/userSchema'
 
 export async function categoryRoutes(app: FastifyInstance) {
   const categoryController = new CategoryController()
+  app.addHook('preHandler', async (request) => {
+    await request.jwtVerify
+  })
   app.get(
     '/',
     {
       schema: {
         response: { 200: $ref('categoriesResponseSchema') },
-        params: uRef('userIdSchema'),
       },
     },
     categoryController.getAllCategories,
@@ -33,7 +35,6 @@ export async function categoryRoutes(app: FastifyInstance) {
       schema: {
         body: $ref('createCategorySchema'),
         response: { 201: $ref('categoryResponseSchema') },
-        params: uRef('userIdSchema'),
       },
     },
     categoryController.createCategory,

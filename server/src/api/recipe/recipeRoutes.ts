@@ -7,6 +7,9 @@ const recipeController = new RecipeController()
 
 // TODO: Refactor route so that it satisfies OAuth logic
 export async function recipeRoutes(app: FastifyInstance) {
+  app.addHook('preHandler', async (request) => {
+    await request.jwtVerify
+  })
   app.get(
     '/',
     {
@@ -14,7 +17,6 @@ export async function recipeRoutes(app: FastifyInstance) {
         response: {
           200: $ref('recipiesResponseSchema'),
         },
-        params: uRef('userIdSchema'),
       },
     },
     recipeController.getAllRecipies,
@@ -39,7 +41,6 @@ export async function recipeRoutes(app: FastifyInstance) {
       schema: {
         body: $ref('createRecipeSchema'),
         response: { 201: $ref('recipeResponseSchema') },
-        params: uRef('userIdSchema'),
       },
     },
     recipeController.createRecipe,

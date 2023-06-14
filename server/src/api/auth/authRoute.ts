@@ -32,14 +32,14 @@ export async function authRoute(app: FastifyInstance) {
       userResponse.data,
     )
 
-    const user = await prisma.user.findFirst({
+    let user = await prisma.user.findFirst({
       where: {
         email,
       },
     })
 
     if (!user) {
-      await prisma.user.create({
+      user = await prisma.user.create({
         data: {
           firstName: given_name,
           lastName: family_name,
@@ -48,5 +48,17 @@ export async function authRoute(app: FastifyInstance) {
         },
       })
     }
+
+    const token = app.jwt.sign(
+      {
+        name: `${user.firstName} ${user.lastName} `,
+        picture: user.imageURL,
+      },
+      {
+        sub: user.id,
+        expiresIn: '30 days',
+      },
+    )
+    return token
   })
 }
