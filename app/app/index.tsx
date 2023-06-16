@@ -1,5 +1,5 @@
 import { Jost_400Regular, useFonts } from '@expo-google-fonts/jost'
-import { NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer, useRoute } from '@react-navigation/native'
 import type { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { Prompt, makeRedirectUri } from 'expo-auth-session'
@@ -18,6 +18,12 @@ type RootStackParamList = {
 }
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home', 'Main'>
+type MainParams = {
+  firstName: string
+  lastName: string
+  email: string
+  imageURL: string
+}
 
 function HomeScreen({ navigation }: Props) {
   const [request, response, promptAsync] = Google.useAuthRequest({
@@ -73,7 +79,9 @@ function HomeScreen({ navigation }: Props) {
   )
 }
 
-function Main({ route, navigation }: Props) {
+function Main({ navigation }: Props) {
+  const route = useRoute()
+  const { firstName, lastName } = route.params as MainParams
   return (
     <View>
       <Text>asfguysdionusgdfyou</Text>
