@@ -6,7 +6,7 @@ import { $ref as uRef } from '../user/userSchema'
 export async function categoryRoutes(app: FastifyInstance) {
   const categoryController = new CategoryController()
   app.addHook('preHandler', async (request) => {
-    await request.jwtVerify
+    await request.jwtVerify()
   })
   app.get(
     '/',

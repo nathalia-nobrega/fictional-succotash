@@ -6,7 +6,7 @@ import { $ref } from './userSchema'
 export async function userRoutes(app: FastifyInstance) {
   const userController = new UserController()
   app.addHook('preHandler', async (request) => {
-    await request.jwtVerify
+    await request.jwtVerify()
   })
 
   app.get(

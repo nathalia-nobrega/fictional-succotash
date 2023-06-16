@@ -8,7 +8,7 @@ const recipeController = new RecipeController()
 // TODO: Refactor route so that it satisfies OAuth logic
 export async function recipeRoutes(app: FastifyInstance) {
   app.addHook('preHandler', async (request) => {
-    await request.jwtVerify
+    await request.jwtVerify()
   })
   app.get(
     '/',

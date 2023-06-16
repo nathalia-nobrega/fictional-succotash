@@ -6,7 +6,7 @@ import { $ref as uRef } from '../user/userSchema'
 export async function todoRoutes(app: FastifyInstance) {
   const todoController = new TodoController()
   app.addHook('preHandler', async (request) => {
-    await request.jwtVerify
+    await request.jwtVerify()
   })
   app.get(
     '/',
