@@ -1,6 +1,5 @@
 import fastify from 'fastify'
 import { categoryRoutes } from './category/categoryRoutes'
-import { recipeCategoryRoutes } from './recipeCategory/recipeCategoryRoutes'
 import { recipeRoutes } from './recipe/recipeRoutes'
 import { todoRoutes } from './todo/todoRoutes'
 import { userRoutes } from './user/userRoutes'
@@ -8,7 +7,6 @@ import { recipeSchemas } from './recipe/recipeSchemas'
 import { userSchema } from './user/userSchema'
 import { categorySchema } from './category/categorySchema'
 import { todoSchema } from './todo/todoSchema'
-import { recipeCategorySchema } from './recipeCategory/recipeCategorySchema'
 import { authRoute } from './auth/authRoute'
 import jwt from '@fastify/jwt'
 import cors from '@fastify/cors'
@@ -23,7 +21,6 @@ export async function startServer() {
     ...userSchema,
     ...categorySchema,
     ...todoSchema,
-    ...recipeCategorySchema,
   ]) {
     app.addSchema(schema)
   }
@@ -32,7 +29,6 @@ export async function startServer() {
   app.register(recipeRoutes, { prefix: 'api/recipies' })
   app.register(todoRoutes, { prefix: 'api/todos' })
   app.register(categoryRoutes, { prefix: 'api/categories' })
-  app.register(recipeCategoryRoutes, { prefix: 'api/recipiesCategories' })
   app.register(authRoute, { prefix: '/api/oauth' })
   app.register(cors, {
     origin: true,

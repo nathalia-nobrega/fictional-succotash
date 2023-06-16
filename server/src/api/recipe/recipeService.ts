@@ -47,12 +47,6 @@ export async function update(
 }
 
 export async function deleteById(userId: string, recipeId: number) {
-  await prisma.recipeCategory.deleteMany({
-    where: {
-      recipeId,
-    },
-  })
-
   await prisma.recipe.delete({
     where: {
       userId_id: {

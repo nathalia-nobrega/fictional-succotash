@@ -1,11 +1,32 @@
 import { buildJsonSchemas } from 'fastify-zod'
 import { z } from 'zod'
+// todo: try to find a better way to reference this schema
+const recipeInput = {
+  name: z.string().trim().min(1),
+  ingredients: z.array(z.string()),
+  instructions: z.string().nullable(),
+  portionsQtd: z.coerce.number().nullable(),
+  timeToCook: z.string().nullable(),
+  mediaLinks: z.array(z.string()),
+}
+
+const recipeGenerated = {
+  id: z.number(),
+  createdAt: z.date(),
+  updatedAt: z.coerce.date(),
+}
+
+const recipeResponseSchema = z.object({
+  ...recipeInput,
+  ...recipeGenerated,
+})
 
 const createCategoryInput = {
   title: z.string().trim().min(1),
 }
 const updateCategoryInput = {
   title: z.string(),
+  recipies: z.array(recipeResponseSchema),
 }
 
 const categoryGenerated = {

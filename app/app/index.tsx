@@ -1,15 +1,25 @@
 import { Jost_400Regular, useFonts } from '@expo-google-fonts/jost'
+import { NavigationContainer } from '@react-navigation/native'
+import type { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { Prompt, makeRedirectUri } from 'expo-auth-session'
 import * as Google from 'expo-auth-session/providers/google'
-import { useRouter } from 'expo-router'
 import * as SecureStore from 'expo-secure-store'
 import { StatusBar } from 'expo-status-bar'
 import { useEffect } from 'react'
 import { Button, StyleSheet, Text, View } from 'react-native'
 import { api } from '../src/lib/api'
 
-export default function App() {
-  const router = useRouter()
+const Stack = createNativeStackNavigator()
+
+type RootStackParamList = {
+  Home: undefined
+  Main: { firstName: string; lastName: string; email: string }
+}
+
+type Props = NativeStackScreenProps<RootStackParamList, 'Home', 'Main'>
+
+function HomeScreen({ navigation }: Props) {
   const [request, response, promptAsync] = Google.useAuthRequest({
     clientId:
       '149499266615-719c4ruqoks56148r0pj9fdjgq0arg80.apps.googleusercontent.com',
@@ -26,10 +36,15 @@ export default function App() {
       const token = await api.post('/api/oauth/token', {
         access_token,
       })
-
       await SecureStore.setItemAsync('token', token.data)
-      console.log(SecureStore.getItemAsync('token'))
-      router.push('/main')
+      const secStoreToken = await SecureStore.getItemAsync('token')
+      const user = await api.get('/api/users', {
+        headers: {
+          Authorization: `Bearer ${secStoreToken}`,
+        },
+      })
+      console.log(user.data)
+      navigation.navigate('Main')
     } catch (err) {
       console.log('Erro SignIn: ' + err)
       throw err
@@ -40,13 +55,6 @@ export default function App() {
       signInWithGoogle(response.authentication.accessToken)
     }
   }, [response])
-
-  const [fontsLoaded] = useFonts({
-    Jost_400Regular,
-  })
-
-  if (!fontsLoaded) return null
-
   return (
     <View style={styles.container} className="bg-red-100">
       <Text
@@ -60,9 +68,35 @@ export default function App() {
           promptAsync()
         }}
       />
-
       <StatusBar style="auto" />
     </View>
+  )
+}
+
+function Main({ route, navigation }: Props) {
+  return (
+    <View>
+      <Text>asfguysdionusgdfyou</Text>
+      {/* <Text>Hey, {JSON.stringify(firstName)}</Text>
+      <Text>Is your email {JSON.stringify(email)}</Text> */}
+    </View>
+  )
+}
+
+export default function App() {
+  const [fontsLoaded] = useFonts({
+    Jost_400Regular,
+  })
+
+  if (!fontsLoaded) return null
+
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen}></Stack.Screen>
+        <Stack.Screen name="Main" component={Main}></Stack.Screen>
+      </Stack.Navigator>
+    </NavigationContainer>
   )
 }
 

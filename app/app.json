@@ -5,7 +5,7 @@
     "scheme" : "recipeman",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "https://i.redd.it/5b058xbyudra1.jpg",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
