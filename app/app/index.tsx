@@ -1,10 +1,15 @@
 import { Jost_400Regular, useFonts } from '@expo-google-fonts/jost'
-import { NavigationContainer } from '@react-navigation/native'
+import {
+  NavigationContainer,
+  createNavigationContainerRef,
+} from '@react-navigation/native'
 import type { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
 import HomeScreen from './home'
 import Main from './main'
+
+export const navigationRef = createNavigationContainerRef()
 
 const Stack = createNativeStackNavigator()
 
@@ -28,8 +33,8 @@ export default function App() {
         initialRouteName="Home"
         screenOptions={{ headerShown: false }}
       >
-        <Stack.Screen name="Home" component={HomeScreen}></Stack.Screen>
-        <Stack.Screen name="Main" component={Main}></Stack.Screen>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Main" component={Main} />
       </Stack.Navigator>
     </NavigationContainer>
   )

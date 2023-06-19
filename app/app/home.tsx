@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { AntDesign } from '@expo/vector-icons'
 import { Prompt, makeRedirectUri } from 'expo-auth-session'
@@ -10,6 +11,10 @@ import { Props } from '.'
 import { api } from '../src/lib/api'
 
 export default function HomeScreen({ navigation }: Props) {
+  // const [isUserAuthenticated, setIsUserAuthenticated] = useState<
+  //   null | boolean
+  // >(null)
+
   const [request, response, promptAsync] = Google.useAuthRequest({
     clientId:
       '149499266615-719c4ruqoks56148r0pj9fdjgq0arg80.apps.googleusercontent.com',
@@ -20,6 +25,25 @@ export default function HomeScreen({ navigation }: Props) {
     }),
     responseType: 'token',
   })
+  // Verify if token exists in local storage
+  useEffect(() => {
+    SecureStore.getItemAsync('token').then(async (token) => {
+      // setIsUserAuthenticated(!!token)
+      const isUserAuthenticated = !!token
+      console.log(`Is User Authenticated? (true/null): ${isUserAuthenticated}`)
+      console.log(`Is token here? ${await SecureStore.getItemAsync('token')}`)
+      if (isUserAuthenticated) navigateToMain()
+    })
+  }, [!request])
+  async function getUserData(jwt_token: string) {
+    const secureToken = await SecureStore.getItemAsync('token')
+    const user = await api.get('/api/users', {
+      headers: {
+        Authorization: `Bearer ${secureToken}`,
+      },
+    })
+    return user.data
+  }
 
   async function signInWithGoogle(access_token: string) {
     try {
@@ -27,18 +51,21 @@ export default function HomeScreen({ navigation }: Props) {
         access_token,
       })
       await SecureStore.setItemAsync('token', token.data)
-      const secStoreToken = await SecureStore.getItemAsync('token')
-      const user = await api.get('/api/users', {
-        headers: {
-          Authorization: `Bearer ${secStoreToken}`,
-        },
-      })
-      navigation.navigate('Main', user.data)
+      const secureToken = await SecureStore.getItemAsync('token')
+      const user_data = await getUserData(secureToken)
+      navigation.navigate('Main', user_data)
     } catch (err) {
       console.log('Erro SignIn: ' + err)
       throw err
     }
   }
+
+  async function navigateToMain() {
+    const secureToken = await SecureStore.getItemAsync('token')
+    const user_data = await getUserData(secureToken)
+    navigation.navigate('Main', user_data)
+  }
+
   useEffect(() => {
     if (response?.type === 'success' && response.authentication?.accessToken) {
       signInWithGoogle(response.authentication.accessToken)
