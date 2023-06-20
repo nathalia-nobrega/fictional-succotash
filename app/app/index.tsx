@@ -14,11 +14,11 @@ export const navigationRef = createNavigationContainerRef()
 const Stack = createNativeStackNavigator()
 
 type RootStackParamList = {
-  Home: undefined
-  Main: { data }
+  Main: undefined
+  Home: { data }
 }
 
-export type Props = NativeStackScreenProps<RootStackParamList, 'Home', 'Main'>
+export type Props = NativeStackScreenProps<RootStackParamList, 'Main', 'Home'>
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -30,11 +30,11 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Home"
+        initialRouteName="Main"
         screenOptions={{ headerShown: false }}
       >
-        <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Main" component={Main} />
+        <Stack.Screen name="Home" component={HomeScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   )
