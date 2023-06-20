@@ -8,6 +8,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
 import HomeScreen from './home'
 import Main from './main'
+import { StatusBar } from 'expo-status-bar'
 
 export const navigationRef = createNavigationContainerRef()
 
@@ -36,6 +37,7 @@ export default function App() {
         <Stack.Screen name="Main" component={Main} />
         <Stack.Screen name="Home" component={HomeScreen} />
       </Stack.Navigator>
+      <StatusBar hidden={true} />
     </NavigationContainer>
   )
 }

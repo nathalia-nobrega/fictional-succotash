@@ -74,7 +74,7 @@ export default function Main({ navigation }: Props) {
         </Text>
       </View>
       <TouchableOpacity
-        className="w-80 flex-row items-center justify-center rounded-md bg-red-800 p-5"
+        className="bg-red-800 w-80 flex-row items-center justify-center rounded-md p-5"
         disabled={!request}
         onPress={() => {
           promptAsync()
