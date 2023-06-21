@@ -1,4 +1,8 @@
-import { Jost_400Regular, useFonts } from '@expo-google-fonts/jost'
+import {
+  Jost_400Regular,
+  Jost_500Medium,
+  useFonts,
+} from '@expo-google-fonts/jost'
 import {
   NavigationContainer,
   createNavigationContainerRef,
@@ -24,6 +28,7 @@ export type Props = NativeStackScreenProps<RootStackParamList, 'Main', 'Home'>
 export default function App() {
   const [fontsLoaded] = useFonts({
     Jost_400Regular,
+    Jost_500Medium,
   })
 
   if (!fontsLoaded) return null
