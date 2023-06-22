@@ -1,6 +1,4 @@
-import { Prisma } from '@prisma/client'
 import { FastifyInstance } from 'fastify'
-import { prisma } from '../../lib/prisma'
 import { RecipeCategoryCategoryController } from './listsController'
 import { $ref } from './listsSchema'
 
@@ -40,11 +38,19 @@ export async function listsRoutes(app: FastifyInstance) {
     rcController.deleteRecipeCategory,
   )
 
-  app.get('/all', async (req, res) => {
-    const sql = Prisma.raw(`SELECT "Recipe"."name", "Category".title
-    FROM "Recipe"
-    JOIN "RecipeCategory" ON "RecipeCategory"."recipeId" = "Recipe".id
-    JOIN "Category" ON "Category".id = "RecipeCategory"."categoryId"`)
-    return await prisma.$queryRaw`${sql}`
-  })
+  app.get(
+    '/all',
+    {
+      schema: { response: { 200: $ref('listsExpandedResponseSchema') } },
+    },
+    rcController.getAllRecipiesCategoriesExpanded,
+  )
+
+  app.get(
+    '/all/categories/count',
+    {
+      schema: { response: { 200: $ref('listsCategoriesCountResponseSchema') } },
+    },
+    rcController.getCategoriesCountByRecipe,
+  )
 }

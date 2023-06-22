@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client'
 import { prisma } from '../../lib/prisma'
 import { CreateListInput, DeleteListInput } from './listsSchema'
 
@@ -33,4 +34,8 @@ export async function deleteById(data: DeleteListInput) {
       },
     },
   })
+}
+
+export async function exeqRawQuery(data: Prisma.Sql) {
+  return await prisma.$queryRaw`${data}`
 }

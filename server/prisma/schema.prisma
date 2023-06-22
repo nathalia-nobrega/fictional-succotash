@@ -65,12 +65,13 @@ model Category {
 }
 
 model RecipeCategory {
+  id       Int     @default(autoincrement())
   Recipe   Recipe? @relation(fields: [recipeId], references: [id])
   recipeId Int
 
   Category   Category? @relation(fields: [categoryId], references: [id])
   categoryId Int
 
-  @@id([recipeId, categoryId])
+  @@id([id])
   @@unique([recipeId, categoryId])
 }
