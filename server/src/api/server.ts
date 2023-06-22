@@ -1,15 +1,17 @@
-import fastify from 'fastify'
-import { categoryRoutes } from './category/categoryRoutes'
-import { recipeRoutes } from './recipe/recipeRoutes'
-import { todoRoutes } from './todo/todoRoutes'
-import { userRoutes } from './user/userRoutes'
-import { recipeSchemas } from './recipe/recipeSchemas'
-import { userSchema } from './user/userSchema'
-import { categorySchema } from './category/categorySchema'
-import { todoSchema } from './todo/todoSchema'
-import { authRoute } from './auth/authRoute'
-import jwt from '@fastify/jwt'
 import cors from '@fastify/cors'
+import jwt from '@fastify/jwt'
+import fastify from 'fastify'
+import { authRoute } from './auth/authRoute'
+import { categoryRoutes } from './category/categoryRoutes'
+import { categorySchema } from './category/categorySchema'
+import { listsRoutes } from './lists/listsRoutes'
+import { listsSchema } from './lists/listsSchema'
+import { recipeRoutes } from './recipe/recipeRoutes'
+import { recipeSchemas } from './recipe/recipeSchemas'
+import { todoRoutes } from './todo/todoRoutes'
+import { todoSchema } from './todo/todoSchema'
+import { userRoutes } from './user/userRoutes'
+import { userSchema } from './user/userSchema'
 
 export async function startServer() {
   const app = fastify({
@@ -21,6 +23,7 @@ export async function startServer() {
     ...userSchema,
     ...categorySchema,
     ...todoSchema,
+    ...listsSchema,
   ]) {
     app.addSchema(schema)
   }
@@ -29,6 +32,7 @@ export async function startServer() {
   app.register(recipeRoutes, { prefix: 'api/recipies' })
   app.register(todoRoutes, { prefix: 'api/todos' })
   app.register(categoryRoutes, { prefix: 'api/categories' })
+  app.register(listsRoutes, { prefix: 'api/lists' })
   app.register(authRoute, { prefix: '/api/oauth' })
   app.register(cors, {
     origin: true,
