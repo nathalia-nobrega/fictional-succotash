@@ -1,7 +1,8 @@
-import { AntDesign } from '@expo/vector-icons'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 import React from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
-import Recipe from './Recipe'
+import NewListButton from './NewListButton'
+import Recipies from './Recipies'
 
 export default function ListRecipe() {
   return (
@@ -11,12 +12,15 @@ export default function ListRecipe() {
           Suas listas de receitas 😋
         </Text>
         <TouchableOpacity>
-          <AntDesign name="plus" size={28} color="black" />
+          <MaterialCommunityIcons
+            name="help-circle-outline"
+            size={28}
+            color="black"
+          />
         </TouchableOpacity>
       </View>
-      {/* START Recipe Lists */}
-      <Recipe />
-      {/* END Recipe Lists */}
+      <Recipies />
+      <NewListButton />
     </View>
   )
 }
