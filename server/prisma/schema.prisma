@@ -34,10 +34,9 @@ model Recipe {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  User       User?     @relation(fields: [userId], references: [id])
-  userId     String?
-  Category   Category? @relation(fields: [categoryId], references: [id])
-  categoryId Int?
+  User           User?            @relation(fields: [userId], references: [id])
+  userId         String?
+  RecipeCategory RecipeCategory[]
 
   @@unique([userId, id])
 }
@@ -55,12 +54,23 @@ model Todo {
 }
 
 model Category {
-  id        Int      @id @default(autoincrement())
-  title     String
-  Recipies  Recipe[]
-  User      User?    @relation(fields: [userId], references: [id])
-  userId    String?
-  updatedAt DateTime @updatedAt
+  id             Int              @id @default(autoincrement())
+  title          String
+  User           User?            @relation(fields: [userId], references: [id])
+  userId         String?
+  updatedAt      DateTime         @updatedAt
+  RecipeCategory RecipeCategory[]
 
   @@unique([id, userId])
+}
+
+model RecipeCategory {
+  Recipe   Recipe? @relation(fields: [recipeId], references: [id])
+  recipeId Int
+
+  Category   Category? @relation(fields: [categoryId], references: [id])
+  categoryId Int
+
+  @@id([recipeId, categoryId])
+  @@unique([recipeId, categoryId])
 }
