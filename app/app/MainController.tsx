@@ -6,11 +6,11 @@ import * as Google from 'expo-auth-session/providers/google'
 import * as SecureStore from 'expo-secure-store'
 import { StatusBar } from 'expo-status-bar'
 import React, { useEffect } from 'react'
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { Props } from '.'
+import { Image, Text, TouchableOpacity, View } from 'react-native'
 import { api } from '../src/lib/api'
+import { navigationRef } from '../src/navigation/RootNavigator'
 
-export default function Main({ navigation }: Props) {
+export default function MainController() {
   const [request, response, promptAsync] = Google.useAuthRequest({
     clientId:
       '149499266615-719c4ruqoks56148r0pj9fdjgq0arg80.apps.googleusercontent.com',
@@ -24,7 +24,7 @@ export default function Main({ navigation }: Props) {
   useEffect(() => {
     SecureStore.getItemAsync('token').then(async (token) => {
       const isUserAuthenticated = !!token
-      if (isUserAuthenticated) navigateToMain()
+      if (isUserAuthenticated) navigateToHome()
     })
   }, [!request])
   async function getUserData(jwt_token: string) {
@@ -45,17 +45,17 @@ export default function Main({ navigation }: Props) {
       await SecureStore.setItemAsync('token', token.data)
       const secureToken = await SecureStore.getItemAsync('token')
       const user_data = await getUserData(secureToken)
-      navigation.navigate('Main', user_data)
+      navigationRef.current?.navigate('Home', user_data)
     } catch (err) {
       console.log('Erro SignIn: ' + err)
       throw err
     }
   }
 
-  async function navigateToMain() {
+  async function navigateToHome() {
     const secureToken = await SecureStore.getItemAsync('token')
     const user_data = await getUserData(secureToken)
-    navigation.navigate('Home', user_data)
+    navigationRef.current?.navigate('Home', user_data)
   }
 
   useEffect(() => {
@@ -64,7 +64,7 @@ export default function Main({ navigation }: Props) {
     }
   }, [response])
   return (
-    <View className="flex-1 items-center gap-y-16" style={styles.container}>
+    <View className="flex-1 items-center gap-y-16 bg-[#fff]">
       <View className="flex items-center justify-center gap-16">
         <Image source={require('../assets/loginPic.png')} alt="SVG Picture" />
         <Text className="w-80 text-justify font-main text-lg">
@@ -74,14 +74,14 @@ export default function Main({ navigation }: Props) {
         </Text>
       </View>
       <TouchableOpacity
-        className="bg-red-800 w-80 flex-row items-center justify-center rounded-md p-5"
+        className="bg-red-800 w-80 flex-row items-center justify-center rounded-md bg-rose-500 p-5"
         disabled={!request}
         onPress={() => {
           promptAsync()
         }}
       >
         <AntDesign name="google" size={20} color="white" />
-        <Text className="ml-4 font-main text-xl" style={styles.txt_white}>
+        <Text className="ml-4 font-main text-xl text-[#fff]">
           Entre com o Google
         </Text>
       </TouchableOpacity>
@@ -89,12 +89,3 @@ export default function Main({ navigation }: Props) {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#FFF',
-  },
-  txt_white: {
-    color: '#FFF',
-  },
-})

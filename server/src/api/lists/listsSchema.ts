@@ -12,6 +12,7 @@ const listsExpandedInput = {
 }
 
 const listsCategoriesCountInput = {
+  id: z.coerce.number(),
   count: z.coerce.number(),
   title: z.string(),
 }

@@ -41,10 +41,8 @@ export default function Recipies() {
                 />
               </View>
               <View className="px-3">
-                <Text key={list.id} className="font-secondary text-2xl">
-                  {list.title}
-                </Text>
-                <Text className="text-lg text-[#907676]" key={list.id}>
+                <Text className="font-secondary text-2xl">{list.title}</Text>
+                <Text className="text-lg text-[#907676]">
                   {list.count} receitas
                 </Text>
               </View>

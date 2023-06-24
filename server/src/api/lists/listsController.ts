@@ -53,11 +53,12 @@ export class RecipeCategoryCategoryController {
   }
 
   async getCategoriesCountByRecipe(req: FastifyRequest, res: FastifyReply) {
-    const sql = Prisma.raw(`SELECT count("Category".id), "Category".title
-    FROM "Category"
-    JOIN "RecipeCategory" ON "RecipeCategory"."categoryId" = "Category".id
-	WHERE "RecipeCategory"."categoryId" = "Category".id
-	GROUP BY "Category".title
+    const sql =
+      Prisma.raw(`SELECT count("Category".id), "Category".title, "Category".id
+      FROM "Category"
+      JOIN "RecipeCategory" ON "RecipeCategory"."categoryId" = "Category".id
+    WHERE "RecipeCategory"."categoryId" = "Category".id
+    GROUP BY "Category".title, "Category".id
 `)
     return exeqRawQuery(sql)
   }
