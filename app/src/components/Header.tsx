@@ -1,16 +1,18 @@
 import { useRoute } from '@react-navigation/native'
-import { TouchableOpacity, View } from 'react-native'
-import NavigationComponent from '../../src/components/NavigationComponent'
-import UserProfile, { TypeUserProfile } from '../../src/components/UserProfile'
 import * as SecureStore from 'expo-secure-store'
-import { navigationRef } from '../navigation/RootNavigator'
+import { TouchableOpacity, View } from 'react-native'
+import { NavigationComponent } from '../../src/components/NavigationComponent'
+import UserProfile, { TypeUserProfile } from '../../src/components/UserProfile'
+import { navigate } from '../navigation/RootNavigator'
+import React from 'react'
 
 export default function Header() {
   const route = useRoute()
 
   async function logOut() {
+    console.log('called it')
     await SecureStore.deleteItemAsync('token')
-    navigationRef.current?.navigate('Main')
+    navigate('Main')
   }
 
   return (
@@ -20,8 +22,10 @@ export default function Header() {
         <View className="mr-5 flex-row items-center justify-around pt-6">
           <NavigationComponent icon="food-drumstick-outline" title="receitas" />
           <NavigationComponent icon="format-list-checks" title="a fazer" />
-          <TouchableOpacity onPress={logOut}>
-            <NavigationComponent icon="logout" title="sair" />
+          <TouchableOpacity onPress={() => logOut()}>
+            <View>
+              <NavigationComponent icon="logout" title="sair" />
+            </View>
           </TouchableOpacity>
         </View>
       </View>

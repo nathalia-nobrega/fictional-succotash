@@ -44,6 +44,7 @@ export default function MainController() {
       })
       await SecureStore.setItemAsync('token', token.data)
       const secureToken = await SecureStore.getItemAsync('token')
+      console.log(secureToken)
       const user_data = await getUserData(secureToken)
       navigationRef.current?.navigate('Home', user_data)
     } catch (err) {
