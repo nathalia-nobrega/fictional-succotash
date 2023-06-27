@@ -1,29 +1,28 @@
-import { useRoute } from '@react-navigation/native'
 import * as SecureStore from 'expo-secure-store'
 import React from 'react'
 import { TouchableOpacity, View } from 'react-native'
 import { NavigationComponent } from '../../src/components/NavigationComponent'
-import UserProfile, { TypeUserProfile } from '../../src/components/UserProfile'
-import { navigate, navigationRef } from '../navigation/RootNavigator'
+import UserProfile from '../../src/components/UserProfile'
+import { TypeUserProfile } from '../lib/user/TypeUserProfile'
+import { navigationRef } from '../navigation/RootNavigator'
 
-export default function Header() {
-  const route = useRoute()
-
+export const Header: React.FC<{ user_data: TypeUserProfile }> = ({
+  user_data,
+}) => {
   async function logOut() {
     await SecureStore.deleteItemAsync('token')
-    // navigate('')
-    console.log('logout')
+    console.info('DESLOGAR')
+    // navigationRef.current?.navigate('Switch')
   }
 
   return (
     <View className="rounded-br-[60] bg-rose-500">
       <View className="my-8">
-        <UserProfile {...(route.params as TypeUserProfile)} />
+        <UserProfile {...user_data} />
         <View className="mr-5 flex-row items-center justify-around pt-6">
           <TouchableOpacity
             onPress={() => {
-              navigate('Lists')
-              navigationRef.current?.canGoBack()
+              navigationRef.current?.navigate('Lists')
             }}
           >
             <NavigationComponent icon="format-list-bulleted" title="listas" />

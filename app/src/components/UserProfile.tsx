@@ -1,15 +1,9 @@
 import React from 'react'
 import { Image, Text, View } from 'react-native'
-
-export type TypeUserProfile = {
-  firstName: string
-  lastName: string
-  email: string
-  imageURL: string
-}
+import { TypeUserProfile } from '../lib/user/UserProfileType'
 
 export default function UserProfile(props: TypeUserProfile) {
-  const { firstName, lastName, email, imageURL } = props
+  const { firstName, imageURL } = props
   return (
     <View className="mx-2 flex-row items-center justify-start">
       <Image
