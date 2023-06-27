@@ -4,7 +4,7 @@ import {
   useFonts,
 } from '@expo-google-fonts/jost'
 import React from 'react'
-import AuthenticationSwitch from '../src/navigation/AuthenticationSwitch'
+import AuthSwitch from '../src/navigation/AuthSwitch'
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -14,5 +14,5 @@ export default function App() {
 
   if (!fontsLoaded) return null
 
-  return <AuthenticationSwitch />
+  return <AuthSwitch />
 }

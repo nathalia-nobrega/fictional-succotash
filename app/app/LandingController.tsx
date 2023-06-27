@@ -8,10 +8,11 @@ import { StatusBar } from 'expo-status-bar'
 import React, { useEffect } from 'react'
 import { Image, Text, TouchableOpacity, View } from 'react-native'
 import { api } from '../src/lib/api'
-import { user_data } from '../src/lib/user_data'
 import { navigationRef } from '../src/navigation/RootNavigator'
+import { getUserData } from '../src/lib/user/UserProvider'
 
-export default function MainController() {
+// TODO: Get user data
+export default function LandingController() {
   const [request, response, promptAsync] = Google.useAuthRequest({
     clientId:
       '149499266615-719c4ruqoks56148r0pj9fdjgq0arg80.apps.googleusercontent.com',
@@ -29,6 +30,7 @@ export default function MainController() {
         access_token,
       })
       await SecureStore.setItemAsync('token', token.data)
+      const user_data = await getUserData()
       navigationRef.current?.navigate('Home', user_data)
     } catch (err) {
       console.error('Error SignIn: ' + err)
