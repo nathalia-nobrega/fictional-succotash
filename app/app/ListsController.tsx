@@ -1,4 +1,4 @@
-import { Text } from 'react-native'
+import ListRecipe from '../src/components/ListRecipe'
 export default function ListsController() {
-  return <Text>asbdfvyasfuasghf</Text>
+  return <ListRecipe />
 }

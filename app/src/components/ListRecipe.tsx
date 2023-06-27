@@ -2,7 +2,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import React from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import NewListButton from './NewListButton'
-import Recipies from './Recipies'
+import Lists from './Lists'
 
 export default function ListRecipe() {
   return (
@@ -19,7 +19,7 @@ export default function ListRecipe() {
           />
         </TouchableOpacity>
       </View>
-      <Recipies />
+      <Lists />
       <NewListButton />
     </View>
   )

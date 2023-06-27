@@ -10,7 +10,7 @@ interface RecipeList {
   count: number
 }
 
-export default function Recipies() {
+export default function Lists() {
   const [recipiesList, setRecipiesList] = useState<RecipeList[]>([])
 
   async function loadLists() {

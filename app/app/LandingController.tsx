@@ -8,6 +8,7 @@ import { StatusBar } from 'expo-status-bar'
 import React, { useEffect } from 'react'
 import { Image, Text, TouchableOpacity, View } from 'react-native'
 import { api } from '../src/lib/api'
+import { user_data } from '../src/lib/user_data'
 import { navigationRef } from '../src/navigation/RootNavigator'
 
 export default function MainController() {
@@ -21,21 +22,6 @@ export default function MainController() {
     }),
     responseType: 'token',
   })
-  useEffect(() => {
-    SecureStore.getItemAsync('token').then(async (token) => {
-      const isUserAuthenticated = !!token
-      if (isUserAuthenticated) navigateToHome()
-    })
-  }, [!request])
-  async function getUserData(jwt_token: string) {
-    const secureToken = await SecureStore.getItemAsync('token')
-    const user = await api.get('/api/users', {
-      headers: {
-        Authorization: `Bearer ${secureToken}`,
-      },
-    })
-    return user.data
-  }
 
   async function signInWithGoogle(access_token: string) {
     try {
@@ -43,20 +29,11 @@ export default function MainController() {
         access_token,
       })
       await SecureStore.setItemAsync('token', token.data)
-      const secureToken = await SecureStore.getItemAsync('token')
-      console.log(secureToken)
-      const user_data = await getUserData(secureToken)
       navigationRef.current?.navigate('Home', user_data)
     } catch (err) {
-      console.log('Erro SignIn: ' + err)
+      console.error('Error SignIn: ' + err)
       throw err
     }
-  }
-
-  async function navigateToHome() {
-    const secureToken = await SecureStore.getItemAsync('token')
-    const user_data = await getUserData(secureToken)
-    navigationRef.current?.navigate('Home', user_data)
   }
 
   useEffect(() => {
