@@ -1,18 +1,19 @@
 import * as SecureStore from 'expo-secure-store'
-import React from 'react'
+import React, { useContext } from 'react'
 import { TouchableOpacity, View } from 'react-native'
 import { NavigationComponent } from '../../src/components/NavigationComponent'
 import UserProfile from '../../src/components/UserProfile'
-import { TypeUserProfile } from '../lib/user/TypeUserProfile'
+import { TypeUserProfile } from '../lib/user/UserProfileType'
 import { navigationRef } from '../navigation/RootNavigator'
+import { AuthContext } from '../navigation/providers/AuthProvider'
 
 export const Header: React.FC<{ user_data: TypeUserProfile }> = ({
   user_data,
 }) => {
+  const { logout } = useContext(AuthContext)
   async function logOut() {
+    logout()
     await SecureStore.deleteItemAsync('token')
-    console.info('DESLOGAR')
-    // navigationRef.current?.navigate('Switch')
   }
 
   return (
@@ -28,10 +29,16 @@ export const Header: React.FC<{ user_data: TypeUserProfile }> = ({
             <NavigationComponent icon="format-list-bulleted" title="listas" />
           </TouchableOpacity>
 
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigationRef.current?.navigate('Tasks')}
+          >
             <NavigationComponent icon="format-list-checks" title="tarefas" />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => logOut()}>
+          <TouchableOpacity
+            onPress={() => {
+              logOut()
+            }}
+          >
             <View>
               <NavigationComponent icon="logout" title="sair" />
             </View>

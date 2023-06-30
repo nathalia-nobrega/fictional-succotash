@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { HomeController } from '../../app/HomeController'
-import { getUserData } from '../lib/user/UserProvider'
-import { TypeUserProfile } from '../lib/user/TypeUserProfile'
-import { StackNavigationProps } from './RootNavigator'
-import { RootStackParamList } from './MainNavigator'
+import { getUserData } from '../lib/user/UserDataProvider'
+import { TypeUserProfile } from '../lib/user/UserProfileType'
+import { StackNavigationProps, RootStackParamList } from './RootNavigator'
 
 export const HomePage: React.FC<
   StackNavigationProps<RootStackParamList, 'Home'>
-> = () => {
+> = ({ navigation, route }) => {
   const [userData, setUserData] = useState<TypeUserProfile>()
   useEffect(() => {
     const userDataParams = async () => {

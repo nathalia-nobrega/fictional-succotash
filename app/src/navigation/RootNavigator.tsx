@@ -1,6 +1,3 @@
-// thank god for ben awad!
-// This allows to get route and navigation props
-
 import {
   NavigationContainerRef,
   ParamListBase,
@@ -11,6 +8,8 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import * as React from 'react'
 import { RootStackParamList } from './MainNavigator'
 
+// This allow to get route and navigation props
+
 export interface StackNavigationProps<
   ParamList extends ParamListBase,
   RouteName extends keyof ParamList = string,
@@ -19,7 +18,7 @@ export interface StackNavigationProps<
   route: RouteProp<ParamList, RouteName>
 }
 
-// This allows to call navigation from outside a Navigator.
+// This allow to call navigation from outside a Navigator. Usefull for floating RoomController
 
 export const navigationRef =
   React.createRef<NavigationContainerRef<RootStackParamList>>()

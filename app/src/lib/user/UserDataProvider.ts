@@ -1,5 +1,5 @@
 import { api } from '../api'
-import { getUserToken } from '../auth/AuthProvider'
+import { getUserToken } from '../auth/AuthTokenProvider'
 
 export async function getUserData() {
   const secureToken = await getUserToken()

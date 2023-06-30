@@ -5,14 +5,15 @@ import { Prompt, makeRedirectUri } from 'expo-auth-session'
 import * as Google from 'expo-auth-session/providers/google'
 import * as SecureStore from 'expo-secure-store'
 import { StatusBar } from 'expo-status-bar'
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Image, Text, TouchableOpacity, View } from 'react-native'
 import { api } from '../src/lib/api'
+import { getUserData } from '../src/lib/user/UserDataProvider'
 import { navigationRef } from '../src/navigation/RootNavigator'
-import { getUserData } from '../src/lib/user/UserProvider'
+import { AuthContext } from '../src/navigation/providers/AuthProvider'
 
-// TODO: Get user data
 export default function LandingController() {
+  const { login } = useContext(AuthContext)
   const [request, response, promptAsync] = Google.useAuthRequest({
     clientId:
       '149499266615-719c4ruqoks56148r0pj9fdjgq0arg80.apps.googleusercontent.com',
@@ -31,6 +32,7 @@ export default function LandingController() {
       })
       await SecureStore.setItemAsync('token', token.data)
       const user_data = await getUserData()
+      login()
       navigationRef.current?.navigate('Home', user_data)
     } catch (err) {
       console.error('Error SignIn: ' + err)
