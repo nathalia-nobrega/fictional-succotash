@@ -15,7 +15,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>()
 
 export const MainNavigator = () => {
   return (
-    <Stack.Navigator screenOptions={{ animation: 'fade', headerShown: false }}>
+    <Stack.Navigator screenOptions={{ animation: 'fade' }}>
       <Stack.Screen
         name="Home"
         options={{ headerShown: false }}
