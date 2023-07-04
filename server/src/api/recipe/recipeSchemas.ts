@@ -3,9 +3,9 @@ import { z } from 'zod'
 
 const recipeInput = {
   name: z.string().trim().min(1),
-  ingredients: z.array(z.string()),
+  ingredients: z.array(z.string()).optional(),
   instructions: z.string().nullable(),
-  portionsQtd: z.coerce.number().nullable(),
+  portionsQtd: z.string().nullable(),
   timeToCook: z.string().nullable(),
   mediaLinks: z.array(z.string()).optional(),
 }
@@ -14,7 +14,7 @@ const updateRecipeInput = {
   name: z.string(),
   ingredients: z.array(z.string()),
   instructions: z.string().nullable(),
-  portionsQtd: z.coerce.number().nullable(),
+  portionsQtd: z.string().nullable(),
   timeToCook: z.string().nullable(),
   mediaLinks: z.array(z.string()),
 }

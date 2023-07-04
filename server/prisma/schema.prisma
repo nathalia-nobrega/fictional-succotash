@@ -28,7 +28,7 @@ model Recipe {
   name         String
   ingredients  String[]
   instructions String?
-  portionsQtd  Int?
+  portionsQtd  String?
   timeToCook   String?
   mediaLinks   String[]
   createdAt    DateTime @default(now())
