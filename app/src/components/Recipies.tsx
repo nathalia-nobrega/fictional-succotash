@@ -54,6 +54,7 @@ export const Recipies = () => {
         Suas receitas 🥘
       </Text>
       <FlatList
+        scrollEnabled={false}
         ItemSeparatorComponent={() => <View style={{ height: 30 }} />}
         data={recipies}
         renderItem={({ item }) => (

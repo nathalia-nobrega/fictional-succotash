@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text } from 'react-native'
-import { Entypo } from '@expo/vector-icons'
+import { FlatList, Text, View } from 'react-native'
 
 export type Recipe = {
   name: string
@@ -20,16 +19,57 @@ export const RecipeController: React.FC<RecipeControllerProps> = ({ data }) => {
   const [mediaLinks, setMediaLinks] = useState<string[]>(recipe.mediaLinks)
   const [ingredients, setIngredients] = useState<string[]>(recipe.ingredients)
 
+  console.info(recipe)
   return (
-    <View className="m-5">
-      <Text className="font-secondary text-3xl text-[#AF4949]">
-        {recipe.name}
-      </Text>
-      <Text>{recipe.mediaLinks.length}</Text>
-      <Text>{recipe.timeToCook}</Text>
-      <Text>{recipe.ingredients}</Text>
-      <Text>{recipe.instructions}</Text>
-      <Text>{recipe.portionsQtd}</Text>
+    <View className="flex gap-2">
+      <View className="flex gap-6">
+        <Text className="font-secondary text-3xl text-[#AF4949]">
+          {recipe.name}
+        </Text>
+      </View>
+
+      <View className="flex gap-8">
+        <View>
+          <Text className="font-main text-3xl">Links úteis</Text>
+          <Text>
+            {mediaLinks.length === 0 ? (
+              <>N/A</>
+            ) : (
+              <FlatList
+                scrollEnabled={false}
+                data={mediaLinks}
+                renderItem={({ item }) => <Text>{item.valueOf()}</Text>}
+              />
+            )}
+          </Text>
+        </View>
+        <View>
+          <Text className="font-main text-3xl">Ingredientes</Text>
+          {ingredients.length === 0 ? (
+            <></>
+          ) : (
+            <FlatList
+              scrollEnabled={false}
+              data={ingredients}
+              renderItem={({ item }) => (
+                <Text className="font-secondary text-lg">{item.valueOf()}</Text>
+              )}
+            />
+          )}
+        </View>
+        <View>
+          <Text className="font-main text-3xl">Porções</Text>
+          {recipe.portionsQtd === null ? (
+            <></>
+          ) : (
+            <Text className="font-secondary text-lg">{recipe.portionsQtd}</Text>
+          )}
+        </View>
+        <View>
+          <Text className="font-main text-3xl">Tempo de preparação</Text>
+          <Text className="font-secondary text-lg">{recipe.timeToCook}</Text>
+        </View>
+      </View>
     </View>
   )
 }
