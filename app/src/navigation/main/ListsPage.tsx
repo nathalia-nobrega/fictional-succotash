@@ -5,6 +5,6 @@ import { RootStackParamList } from '../MainNavigator'
 
 export const ListsPage: React.FC<
   StackNavigationProps<RootStackParamList, 'Lists'>
-> = ({ navigation }) => {
+> = ({ navigation, route }) => {
   return <ListsController />
 }

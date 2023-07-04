@@ -25,7 +25,6 @@ const Item = (props: RecipeDTO) => (
 
 export const Recipies = () => {
   const { recipies } = useContext(RecipiesContext)
-  console.info('Recipies (recipies component) received: ', recipies)
   return (
     <View className=" mx-8 my-8 flex items-start justify-center">
       <Text className="mb-8 mt-1 font-secondary text-2xl">

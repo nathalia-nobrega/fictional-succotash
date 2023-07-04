@@ -4,7 +4,7 @@ import { Text, TouchableOpacity, View } from 'react-native'
 import NewListButton from './NewListButton'
 import Lists from './Lists'
 
-export default function ListRecipe() {
+export default function ListsScreen() {
   return (
     <View>
       <View className="flex-row justify-between px-5 py-10">

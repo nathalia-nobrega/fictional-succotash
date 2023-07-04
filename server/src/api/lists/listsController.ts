@@ -47,7 +47,8 @@ export class RecipeCategoryCategoryController {
     res: FastifyReply,
   ) {
     const categoryId = req.params.categoryId
-    const sql = Prisma.raw(`SELECT "Recipe"."name", "Category".title
+    const sql =
+      Prisma.raw(`SELECT "Recipe".id,"Recipe"."name","Recipe"."timeToCook" ,"Category".title
     FROM "Recipe"
     JOIN "RecipeCategory" ON "RecipeCategory"."recipeId" = "Recipe".id
     JOIN "Category" ON "Category".id = "RecipeCategory"."categoryId"

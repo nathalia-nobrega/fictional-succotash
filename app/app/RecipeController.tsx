@@ -3,6 +3,7 @@ import { Text, View } from 'react-native'
 import RecipeInfo from '../src/components/RecipeInfo'
 
 export type Recipe = {
+  id?: number
   name: string
   timeToCook: string
   ingredients: string[]

@@ -7,8 +7,10 @@ const listsInput = {
 }
 
 const listsExpandedInput = {
-  name: z.string(), // recipe
   title: z.string(), // category
+  id: z.number(),
+  name: z.string(), // recipe
+  timeToCook: z.string(), // recipe
 }
 
 const listsCategoriesCountInput = {
