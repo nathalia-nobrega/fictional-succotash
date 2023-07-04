@@ -1,25 +1,30 @@
-import * as SecureStore from 'expo-secure-store'
+import { Ionicons } from '@expo/vector-icons'
 import React, { useEffect, useState } from 'react'
 import { FlatList, Text, TouchableOpacity, View } from 'react-native'
 import { api } from '../lib/api'
-import { Ionicons } from '@expo/vector-icons'
+import { getUserToken } from '../lib/auth/AuthTokenProvider'
+import { navigate } from '../navigation/RootNavigator'
 
-type Recipe = {
+type RecipeDTO = {
   id: number
   name: string
   timeToCook: string
+  data: any
 }
 
-const Item = (props: Recipe) => (
-  <TouchableOpacity key={props.id}>
-    <View className="flex gap-y-2 rounded-md bg-gray-300 p-8 px-3">
-      <Text className="font-secondary text-lg text-[#AF4949]">
+const Item = (props: RecipeDTO) => (
+  <TouchableOpacity
+    key={props.id}
+    onPress={() => navigate('Recipe', { data: props.data })}
+  >
+    <View className="flex gap-y-2 rounded-md bg-[#ffa8b8] p-8 px-3">
+      <Text className="font-secondary text-lg text-[#574145]">
         {props.name}
       </Text>
       <View className="flex-row gap-x-3">
         <Ionicons name="timer-outline" size={20} color="black" />
-        <Text className="font-main text-base text-[#918686]">
-          {props.timeToCook}
+        <Text className="font-main text-base text-[#5b1329]">
+          {props.timeToCook == null ? <>N/A</> : <>{props.timeToCook}</>}
         </Text>
       </View>
     </View>
@@ -27,36 +32,39 @@ const Item = (props: Recipe) => (
 )
 
 export const Recipies = () => {
-  const [recipies, setRecipies] = useState<Recipe[]>([])
+  const [recipies, setRecipies] = useState<RecipeDTO[]>([])
 
   async function loadRecipies() {
-    const token = await SecureStore.getItemAsync('token')
-    const recipies = await api.get('/api/recipies/', {
+    const token = await getUserToken()
+    const recipiesResponse = await api.get('/api/recipies/', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
-    setRecipies(recipies.data)
+    setRecipies(recipiesResponse.data)
   }
 
   useEffect(() => {
     loadRecipies()
-  })
+  }, [])
 
   return (
-    <View className="flex items-center">
-      <View className="mx-8 my-8">
-        <Text className="font-secondary text-2xl">Suas receitas 🥘</Text>
-      </View>
-      <View>
-        <FlatList
-          ItemSeparatorComponent={() => <View style={{ height: 30 }} />}
-          data={recipies}
-          renderItem={({ item }) => (
-            <Item id={item.id} name={item.name} timeToCook={item.timeToCook} />
-          )}
-        />
-      </View>
+    <View className=" mx-8 my-8 flex items-start justify-center">
+      <Text className="mb-8 mt-1 font-secondary text-2xl">
+        Suas receitas 🥘
+      </Text>
+      <FlatList
+        ItemSeparatorComponent={() => <View style={{ height: 30 }} />}
+        data={recipies}
+        renderItem={({ item }) => (
+          <Item
+            id={item.id}
+            name={item.name}
+            timeToCook={item.timeToCook}
+            data={recipies.find((obj) => obj.id === item.id)}
+          />
+        )}
+      />
     </View>
   )
 }

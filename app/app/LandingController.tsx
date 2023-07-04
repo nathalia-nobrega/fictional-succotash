@@ -8,8 +8,6 @@ import { StatusBar } from 'expo-status-bar'
 import React, { useContext, useEffect } from 'react'
 import { Image, Text, TouchableOpacity, View } from 'react-native'
 import { api } from '../src/lib/api'
-import { getUserData } from '../src/lib/user/UserDataProvider'
-import { navigationRef } from '../src/navigation/RootNavigator'
 import { AuthContext } from '../src/navigation/providers/AuthProvider'
 
 export default function LandingController() {
@@ -31,9 +29,7 @@ export default function LandingController() {
         access_token,
       })
       await SecureStore.setItemAsync('token', token.data)
-      const user_data = await getUserData()
       login()
-      navigationRef.current?.navigate('Home', user_data)
     } catch (err) {
       console.error('Error SignIn: ' + err)
       throw err

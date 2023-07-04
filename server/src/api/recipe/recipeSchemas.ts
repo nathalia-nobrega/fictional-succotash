@@ -7,7 +7,7 @@ const recipeInput = {
   instructions: z.string().nullable(),
   portionsQtd: z.coerce.number().nullable(),
   timeToCook: z.string().nullable(),
-  mediaLinks: z.array(z.string()),
+  mediaLinks: z.array(z.string()).optional(),
 }
 
 const updateRecipeInput = {

@@ -14,7 +14,7 @@ export const HomeController: React.FC<HomeControllerProps> = ({
 }) => {
   const navigation = useNavigation<RootStackParamList>()
   return (
-    <ScrollView className="flex">
+    <ScrollView className="flex" keyboardShouldPersistTaps="always">
       <View>
         <Header user_data={user_data} />
         <Recipies />

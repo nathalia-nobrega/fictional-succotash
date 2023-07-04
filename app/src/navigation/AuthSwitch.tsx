@@ -1,6 +1,7 @@
 import {
   Jost_400Regular,
   Jost_500Medium,
+  Jost_700Bold,
   useFonts,
 } from '@expo-google-fonts/jost'
 import { NavigationContainer } from '@react-navigation/native'
@@ -22,6 +23,7 @@ export const AuthSwitch = () => {
   const [fontsLoaded] = useFonts({
     Jost_400Regular,
     Jost_500Medium,
+    Jost_700Bold,
   })
 
   useEffect(() => {

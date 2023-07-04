@@ -1,6 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { HomePage } from './main/HomePage'
 import { ListsPage } from './main/ListsPage'
+import { RecipePage } from './main/RecipePage'
 import { TasksPage } from './main/TasksPage'
 
 export type RootStackParamList = {
@@ -9,6 +10,7 @@ export type RootStackParamList = {
   Header: undefined
   NewList: undefined
   Tasks: undefined
+  Recipe: { data }
 }
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
@@ -23,6 +25,7 @@ export const MainNavigator = () => {
       />
       <Stack.Screen name="Lists" component={ListsPage} />
       <Stack.Screen name="Tasks" component={TasksPage} />
+      <Stack.Screen name="Recipe" component={RecipePage} />
     </Stack.Navigator>
   )
 }

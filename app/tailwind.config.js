@@ -6,6 +6,7 @@ module.exports = {
       fontFamily: {
         main: 'Jost_400Regular',
         secondary: 'Jost_500Medium',
+        bold: 'Jost_700Bold',
       },
     },
     colors: {
