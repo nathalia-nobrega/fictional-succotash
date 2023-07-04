@@ -1,7 +1,7 @@
 import * as SecureStore from 'expo-secure-store'
 import React, { useContext } from 'react'
 import { TouchableOpacity, View } from 'react-native'
-import { NavigationComponent } from '../../src/components/NavigationComponent'
+import { HeaderButton } from '../../src/components/HeaderButton'
 import UserProfile from '../../src/components/UserProfile'
 import { TypeUserProfile } from '../lib/user/UserProfileType'
 import { navigationRef } from '../navigation/RootNavigator'
@@ -26,13 +26,13 @@ export const Header: React.FC<{ user_data: TypeUserProfile }> = ({
               navigationRef.current?.navigate('Lists')
             }}
           >
-            <NavigationComponent icon="format-list-bulleted" title="listas" />
+            <HeaderButton icon="format-list-bulleted" title="listas" />
           </TouchableOpacity>
 
           <TouchableOpacity
             onPress={() => navigationRef.current?.navigate('Tasks')}
           >
-            <NavigationComponent icon="format-list-checks" title="tarefas" />
+            <HeaderButton icon="format-list-checks" title="tarefas" />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
@@ -40,7 +40,7 @@ export const Header: React.FC<{ user_data: TypeUserProfile }> = ({
             }}
           >
             <View>
-              <NavigationComponent icon="logout" title="sair" />
+              <HeaderButton icon="logout" title="sair" />
             </View>
           </TouchableOpacity>
         </View>

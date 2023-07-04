@@ -1,9 +1,8 @@
-import { useNavigation } from '@react-navigation/native'
 import React from 'react'
-import { ScrollView, View } from 'react-native'
+import { ScrollView } from 'react-native'
 import { Header } from '../src/components/Header'
 import { Recipies } from '../src/components/Recipies'
-import { RootStackParamList } from '../src/navigation/MainNavigator'
+import { RecipiesProvider } from '../src/components/context/RecipeContext'
 
 export type HomeControllerProps = {
   user_data: any
@@ -12,13 +11,12 @@ export type HomeControllerProps = {
 export const HomeController: React.FC<HomeControllerProps> = ({
   user_data,
 }) => {
-  const navigation = useNavigation<RootStackParamList>()
   return (
     <ScrollView keyboardShouldPersistTaps="always">
-      <View>
+      <RecipiesProvider>
         <Header user_data={user_data} />
         <Recipies />
-      </View>
+      </RecipiesProvider>
     </ScrollView>
   )
 }

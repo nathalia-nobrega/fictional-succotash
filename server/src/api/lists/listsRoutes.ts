@@ -38,7 +38,7 @@ export async function listsRoutes(app: FastifyInstance) {
   )
 
   app.get(
-    '/all',
+    '/categories/:categoryId/recipies',
     {
       schema: { response: { 200: $ref('listsExpandedResponseSchema') } },
     },

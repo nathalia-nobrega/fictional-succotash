@@ -8,6 +8,7 @@ import {
   getAll,
   getById,
 } from './listsService'
+import { CategoryIdInput } from '../category/categorySchema'
 
 export class RecipeCategoryCategoryController {
   async getAllRecipiesCategories(req: FastifyRequest, res: FastifyReply) {
@@ -42,13 +43,15 @@ export class RecipeCategoryCategoryController {
   }
 
   async getAllRecipiesCategoriesExpanded(
-    req: FastifyRequest,
+    req: FastifyRequest<{ Params: CategoryIdInput }>,
     res: FastifyReply,
   ) {
+    const categoryId = req.params.categoryId
     const sql = Prisma.raw(`SELECT "Recipe"."name", "Category".title
     FROM "Recipe"
     JOIN "RecipeCategory" ON "RecipeCategory"."recipeId" = "Recipe".id
-    JOIN "Category" ON "Category".id = "RecipeCategory"."categoryId"`)
+    JOIN "Category" ON "Category".id = "RecipeCategory"."categoryId"
+    WHERE "Category".id = ${categoryId}`)
     return exeqRawQuery(sql)
   }
 

@@ -10,7 +10,7 @@ type Props = {
   icon: MaterialIconName
   title: string
 }
-export const NavigationComponent: React.FC<Props> = ({ icon, title }) => {
+export const HeaderButton: React.FC<Props> = ({ icon, title }) => {
   return (
     <View>
       <View className="mb-2 h-[45] w-[45] flex-col items-center justify-center rounded-md bg-gray-300/50">

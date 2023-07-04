@@ -1,16 +1,8 @@
 import { Ionicons } from '@expo/vector-icons'
-import React, { useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import { FlatList, Text, TouchableOpacity, View } from 'react-native'
-import { api } from '../lib/api'
-import { getUserToken } from '../lib/auth/AuthTokenProvider'
 import { navigate } from '../navigation/RootNavigator'
-
-type RecipeDTO = {
-  id: number
-  name: string
-  timeToCook: string
-  data: any
-}
+import { RecipeDTO, RecipiesContext } from './context/RecipeContext'
 
 const Item = (props: RecipeDTO) => (
   <TouchableOpacity
@@ -32,22 +24,8 @@ const Item = (props: RecipeDTO) => (
 )
 
 export const Recipies = () => {
-  const [recipies, setRecipies] = useState<RecipeDTO[]>([])
-
-  async function loadRecipies() {
-    const token = await getUserToken()
-    const recipiesResponse = await api.get('/api/recipies/', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    setRecipies(recipiesResponse.data)
-  }
-
-  useEffect(() => {
-    loadRecipies()
-  }, [])
-
+  const { recipies } = useContext(RecipiesContext)
+  console.info('Recipies (recipies component) received: ', recipies)
   return (
     <View className=" mx-8 my-8 flex items-start justify-center">
       <Text className="mb-8 mt-1 font-secondary text-2xl">
