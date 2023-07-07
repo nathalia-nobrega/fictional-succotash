@@ -5,6 +5,6 @@ import { StackNavigationProps } from '../RootNavigator'
 
 export const RecipePage: React.FC<
   StackNavigationProps<RootStackParamList, 'Recipe'>
-> = ({ route }) => {
+> = ({ navigation, route }) => {
   return <RecipeController data={route.params.data} />
 }

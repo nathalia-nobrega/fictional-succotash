@@ -7,7 +7,7 @@ import React, {
 import { api } from '../../lib/api'
 import { getUserToken } from '../../lib/auth/AuthTokenProvider'
 
-/* The reason why this context exists is I needed to access the same data from different components that needed a "middle man" in order to receive it. So I figured using a context would make my life easier */
+// TODO: Update this to handle recipe updates and deletion
 
 export type RecipeDTO = {
   id: number
@@ -25,6 +25,7 @@ export const RecipiesContext = createContext<RecipiesContextType>(
   null as unknown as RecipiesContextType,
 )
 
+// Using this mainly because I try to reduce the amount of times I make a request for a recipe
 export const RecipiesProvider = ({ children }: PropsWithChildren) => {
   const [recipies, setRecipies] = useState<RecipeDTO[]>([])
   async function loadRecipies() {

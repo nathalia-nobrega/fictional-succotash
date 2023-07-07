@@ -23,14 +23,14 @@ export const Header: React.FC<{ user_data: TypeUserProfile }> = ({
         <View className="mr-5 flex-row items-center justify-around pt-6">
           <TouchableOpacity
             onPress={() => {
-              navigationRef.current?.navigate('Lists')
+              navigationRef.current?.navigate('Listas')
             }}
           >
             <HeaderButton icon="format-list-bulleted" title="listas" />
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => navigationRef.current?.navigate('Tasks')}
+            onPress={() => navigationRef.current?.navigate('Tarefas')}
           >
             <HeaderButton icon="format-list-checks" title="tarefas" />
           </TouchableOpacity>

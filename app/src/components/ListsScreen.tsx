@@ -1,8 +1,8 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import React from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
-import NewListButton from './NewListButton'
 import Lists from './Lists'
+import NewListButton from './NewListButton'
 
 export default function ListsScreen() {
   return (

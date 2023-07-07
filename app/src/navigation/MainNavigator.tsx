@@ -6,13 +6,13 @@ import { RecipePage } from './main/RecipePage'
 import { TasksPage } from './main/TasksPage'
 
 export type RootStackParamList = {
-  Home: undefined
-  Lists: undefined
+  Inicio: undefined
+  Listas: undefined
   Header: undefined
-  NewList: undefined
-  Tasks: undefined
-  Recipe: { data }
-  ListRecipe: { data }
+  NovaLista: undefined
+  Tarefas: undefined
+  Receitas: { data }
+  ListRecipies: { data }
 }
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
@@ -21,14 +21,14 @@ export const MainNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ animation: 'fade' }}>
       <Stack.Screen
-        name="Home"
+        name="Inicio"
         options={{ headerShown: false }}
         component={HomePage}
       />
-      <Stack.Screen name="Lists" component={ListsPage} />
-      <Stack.Screen name="Tasks" component={TasksPage} />
-      <Stack.Screen name="Recipe" component={RecipePage} />
-      <Stack.Screen name="ListRecipe" component={ListRecipePage} />
+      <Stack.Screen name="Listas" component={ListsPage} />
+      <Stack.Screen name="Tarefas" component={TasksPage} />
+      <Stack.Screen name="Receitas" component={RecipePage} />
+      <Stack.Screen name="ListRecipies" component={ListRecipePage} />
     </Stack.Navigator>
   )
 }

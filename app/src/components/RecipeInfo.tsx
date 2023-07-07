@@ -11,7 +11,7 @@ export default function RecipeInfo(props: RecipeInfoProps) {
     <View className="mb-8">
       <Text className="font-main text-3xl">{props.infoTitle}</Text>
       {typeof props.infoData === 'string' ? (
-        <Text>{props.infoData}</Text>
+        <Text className="font-main text-lg">{props.infoData}</Text>
       ) : (
         <Text>
           {props.infoItemCount === 0 || props.infoItemCount === null ? (
@@ -21,7 +21,7 @@ export default function RecipeInfo(props: RecipeInfoProps) {
               scrollEnabled={false}
               data={props.infoData}
               renderItem={({ item }) => (
-                <Text className="font-secondary text-lg">{item}</Text>
+                <Text className="font-main text-lg">{item}</Text>
               )}
             />
           )}

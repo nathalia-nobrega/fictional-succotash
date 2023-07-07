@@ -5,6 +5,7 @@ import {
 } from '../../../app/ListRecipeController'
 import { RootStackParamList } from '../MainNavigator'
 import { StackNavigationProps } from '../RootNavigator'
+import { RecipiesProvider } from '../../components/context/RecipeContext'
 
 export type ListRecipeProps = {
   data: ListRecipeType[]
@@ -13,5 +14,9 @@ export type ListRecipeProps = {
 export const ListRecipePage: React.FC<
   StackNavigationProps<RootStackParamList, 'ListRecipe'>
 > = ({ navigation, route }) => {
-  return <ListRecipeController data={route.params.data} />
+  return (
+    <RecipiesProvider>
+      <ListRecipeController data={route.params.data} />
+    </RecipiesProvider>
+  )
 }

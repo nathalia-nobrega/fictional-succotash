@@ -15,15 +15,13 @@ export type RecipeControllerProps = {
   data: Recipe
 }
 
-// TODO: Handle responsive empty arrays
 export const RecipeController: React.FC<RecipeControllerProps> = ({ data }) => {
   const [recipe, setRecipe] = useState(data)
 
-  console.info(recipe)
   return (
-    <View>
+    <View className="flex-1 bg-[#fff]">
       <View>
-        <Text className="mt-6 text-center font-secondary text-3xl text-[#AF4949]">
+        <Text className="mx-6 mt-8 text-center font-secondary text-3xl text-[#AF4949]">
           {recipe.name}
         </Text>
       </View>
@@ -40,7 +38,7 @@ export const RecipeController: React.FC<RecipeControllerProps> = ({ data }) => {
           infoData={recipe.ingredients}
         />
         <RecipeInfo
-          infoTitle="Porções"
+          infoTitle="Porções geradas"
           infoData={recipe.portionsQtd}
           infoItemCount={null}
         />

@@ -1,13 +1,17 @@
 import { Ionicons } from '@expo/vector-icons'
 import React, { useContext } from 'react'
 import { FlatList, Text, TouchableOpacity, View } from 'react-native'
-import { navigate } from '../navigation/RootNavigator'
+import { navigationRef } from '../navigation/RootNavigator'
 import { RecipeDTO, RecipiesContext } from './context/RecipeContext'
 
-const Item = (props: RecipeDTO) => (
+// TODO: Make this reusable
+
+export const Item = (props: RecipeDTO) => (
   <TouchableOpacity
     key={props.id}
-    onPress={() => navigate('Recipe', { data: props.data })}
+    onPress={() => {
+      navigationRef.current?.navigate('Receitas', { data: props.data })
+    }}
   >
     <View className="flex gap-y-2 rounded-md bg-[#ffa8b8] p-8 px-3">
       <Text className="font-secondary text-lg text-[#574145]">
@@ -26,7 +30,7 @@ const Item = (props: RecipeDTO) => (
 export const Recipies = () => {
   const { recipies } = useContext(RecipiesContext)
   return (
-    <View className=" mx-8 my-8 flex items-start justify-center">
+    <View className="mx-8 my-8 flex">
       <Text className="mb-8 mt-1 font-secondary text-2xl">
         Suas receitas 🥘
       </Text>
