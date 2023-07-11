@@ -47,6 +47,16 @@ export const Recipies = () => {
           />
         )}
       />
+      <View className="my-10 flex items-center justify-center">
+        <TouchableOpacity
+          className="w-[200] rounded-full bg-rose-600 p-3"
+          onPress={() => navigationRef.current?.navigate('NovaReceita')}
+        >
+          <Text className="text-center font-secondary uppercase text-[#fff]">
+            Criar nova receita
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   )
 }

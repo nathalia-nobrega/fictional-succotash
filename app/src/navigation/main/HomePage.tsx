@@ -6,7 +6,7 @@ import { StackNavigationProps } from '../RootNavigator'
 import { RootStackParamList } from '../MainNavigator'
 
 export const HomePage: React.FC<
-  StackNavigationProps<RootStackParamList, 'Home'>
+  StackNavigationProps<RootStackParamList, 'Inicio'>
 > = ({ navigation, route }) => {
   const [userData, setUserData] = useState<TypeUserProfile>()
   useEffect(() => {

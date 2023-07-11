@@ -1,11 +1,10 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import * as SecureStore from 'expo-secure-store'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FlatList, Text, TouchableOpacity, View } from 'react-native'
 import { api } from '../lib/api'
 import { getUserToken } from '../lib/auth/AuthTokenProvider'
 import { navigationRef } from '../navigation/RootNavigator'
-import { RecipiesContext } from './context/RecipeContext'
 
 type RecipeList = {
   id: number
