@@ -1,10 +1,10 @@
 import React from 'react'
-import Tasks from '../../components/Tasks'
-import { StackNavigationProps } from '../RootNavigator'
+import TasksController from '../../components/TasksController'
 import { RootStackParamList } from '../MainNavigator'
+import { StackNavigationProps } from '../RootNavigator'
 
 export const TasksPage: React.FC<
-  StackNavigationProps<RootStackParamList, 'Tasks'>
+  StackNavigationProps<RootStackParamList, 'Tarefas'>
 > = () => {
-  return <Tasks />
+  return <TasksController />
 }

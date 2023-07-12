@@ -3,6 +3,7 @@ import React, { useContext } from 'react'
 import { FlatList, Text, TouchableOpacity, View } from 'react-native'
 import { navigationRef } from '../navigation/RootNavigator'
 import { RecipeDTO, RecipiesContext } from './context/RecipeContext'
+import { AddNewButton } from './AddNewButton'
 
 // TODO: Make this reusable
 
@@ -34,6 +35,11 @@ export const Recipies = () => {
       <Text className="mb-8 mt-1 font-secondary text-2xl">
         Suas receitas 🥘
       </Text>
+      <TouchableOpacity
+        onPress={() => navigationRef.current?.navigate('NovaReceita')}
+      >
+        <AddNewButton title="Adicionar nova receita" />
+      </TouchableOpacity>
       <FlatList
         scrollEnabled={false}
         ItemSeparatorComponent={() => <View style={{ height: 30 }} />}
@@ -47,16 +53,6 @@ export const Recipies = () => {
           />
         )}
       />
-      <View className="my-10 flex items-center justify-center">
-        <TouchableOpacity
-          className="w-[200] rounded-full bg-rose-600 p-3"
-          onPress={() => navigationRef.current?.navigate('NovaReceita')}
-        >
-          <Text className="text-center font-secondary uppercase text-[#fff]">
-            Criar nova receita
-          </Text>
-        </TouchableOpacity>
-      </View>
     </View>
   )
 }
