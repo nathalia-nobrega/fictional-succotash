@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
-import { Text, View } from 'react-native'
+import { Alert, Text, TouchableOpacity, View } from 'react-native'
 import RecipeInfo from '../src/components/RecipeInfo'
 
 export type Recipe = {
   id?: number
   name: string
-  timeToCook: string
   ingredients: string[]
   instructions: string | null
   portionsQtd: string | null
+  timeToCook: string
   mediaLinks: string[]
 }
 export type RecipeControllerProps = {
@@ -17,6 +17,14 @@ export type RecipeControllerProps = {
 
 export const RecipeController: React.FC<RecipeControllerProps> = ({ data }) => {
   const [recipe, setRecipe] = useState(data)
+  const createThreeButtonAlert = () =>
+    Alert.alert('', 'Tem certeza que deseja excluir essa receita?', [
+      {
+        text: 'Sim, quero excluir!',
+      },
+      { text: 'Não quero excluir' },
+    ])
+  console.info('RecipeController.tsx got data: ', data)
 
   return (
     <View className="flex-1 bg-[#fff]">
@@ -47,6 +55,17 @@ export const RecipeController: React.FC<RecipeControllerProps> = ({ data }) => {
           infoItemCount={null}
           infoData={recipe.timeToCook}
         />
+      </View>
+      {/* TODO: Implement this */}
+      <View className="flex items-center justify-center">
+        <TouchableOpacity
+          className="flex h-12 w-36 justify-center rounded-full bg-red-400 p-2"
+          onPress={createThreeButtonAlert}
+        >
+          <Text className="text-center uppercase text-[#fff]">
+            excluir receita
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   )

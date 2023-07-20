@@ -1,10 +1,15 @@
+import React from 'react'
 import { NewRecipeController } from '../../../app/NewRecipeController'
+import { RecipiesProvider } from '../../components/context/RecipeContext'
 import { RootStackParamList } from '../MainNavigator'
 import { StackNavigationProps } from '../RootNavigator'
-import React from 'react'
 
 export const NewRecipePage: React.FC<
   StackNavigationProps<RootStackParamList, 'NovaReceita'>
 > = ({ navigation, route }) => {
-  return <NewRecipeController />
+  return (
+    <RecipiesProvider>
+      <NewRecipeController />
+    </RecipiesProvider>
+  )
 }

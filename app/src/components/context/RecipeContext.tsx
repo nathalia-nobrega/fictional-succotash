@@ -1,6 +1,7 @@
 import React, {
   PropsWithChildren,
   createContext,
+  useCallback,
   useEffect,
   useState,
 } from 'react'
@@ -19,6 +20,8 @@ export type RecipeDTO = {
 type RecipiesContextType = {
   recipies: RecipeDTO[]
   setRecipies: React.Dispatch<React.SetStateAction<RecipeDTO[]>>
+  trigRequest: boolean
+  setTrigRequest: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const RecipiesContext = createContext<RecipiesContextType>(
@@ -28,7 +31,9 @@ export const RecipiesContext = createContext<RecipiesContextType>(
 // Using this mainly because I try to reduce the amount of times I make a request for a recipe
 export const RecipiesProvider = ({ children }: PropsWithChildren) => {
   const [recipies, setRecipies] = useState<RecipeDTO[]>([])
-  async function loadRecipies() {
+  // Whenever a child component changes this value, the useEffect is triggered
+  const [trigRequest, setTrigRequest] = useState(false)
+  const loadRecipies = useCallback(async () => {
     const token = await getUserToken()
     const recipiesResponse = await api.get('/api/recipies/', {
       headers: {
@@ -36,13 +41,16 @@ export const RecipiesProvider = ({ children }: PropsWithChildren) => {
       },
     })
     setRecipies(recipiesResponse.data)
-  }
-
+    console.log('triggered provider')
+    console.debug('RecipeContext.tsx recipies data: ', recipies)
+  }, [])
   useEffect(() => {
     loadRecipies()
-  }, [])
+  }, [loadRecipies, trigRequest])
   return (
-    <RecipiesContext.Provider value={{ recipies, setRecipies }}>
+    <RecipiesContext.Provider
+      value={{ recipies, setRecipies, setTrigRequest, trigRequest }}
+    >
       {children}
     </RecipiesContext.Provider>
   )

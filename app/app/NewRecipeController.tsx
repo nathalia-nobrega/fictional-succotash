@@ -1,7 +1,11 @@
 import { AntDesign } from '@expo/vector-icons'
 import { Formik } from 'formik'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { RecipiesContext } from '../src/components/context/RecipeContext'
+import { api } from '../src/lib/api'
+import { getUserToken } from '../src/lib/auth/AuthTokenProvider'
+import { Recipe } from './RecipeController'
 
 interface Values {
   title: string
@@ -15,6 +19,8 @@ interface Values {
 
 export const NewRecipeController: React.FC = () => {
   const [canShowAgain, setCanShowAgain] = useState(true)
+  const { recipies, trigRequest, setTrigRequest } = useContext(RecipiesContext)
+
   const createThreeButtonAlert = () =>
     Alert.alert(
       '',
@@ -28,6 +34,31 @@ export const NewRecipeController: React.FC = () => {
       ],
     )
 
+  async function sendRecipe(recipe: Recipe) {
+    const token = await getUserToken()
+    try {
+      const response = await api.post(
+        '/api/recipies/',
+        {
+          ...recipe,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
+      console.info('POST Recipe response: ', response.data)
+      console.debug('Recipies before POST: ', recipies)
+      setTrigRequest(!trigRequest)
+      console.debug('Recipies after POST: ', recipies)
+      // navigationRef?.current.navigate('Receitas', response.data)
+    } catch (err) {
+      console.error('Error POST Recipe: ', err)
+      throw err
+    }
+  }
+
   function handleFormData(values: Values) {
     const ingredients =
       values.ingredients === null
@@ -37,18 +68,23 @@ export const NewRecipeController: React.FC = () => {
     const mediaLinksTest = [values.mediaLinkOne, values.mediaLinkTwo]
     const mediaLinks = []
     mediaLinksTest.forEach((link) =>
-      link !== null ? mediaLinks.push(link) : null,
+      link !== null ? (link.length !== 0 ? mediaLinks.push(link) : null) : null,
     )
     const instructions =
       values.instructions.length === 0 ? null : values.instructions
     const timeToCook = values.timeToCook.length === 0 ? null : values.timeToCook
     const portionsQtd =
       values.portionsQtd.length === 0 ? null : values.portionsQtd
-    console.info('Instructions: ', instructions)
-    console.info('Time to Cook: ', timeToCook)
-    console.info('Portions: ', portionsQtd)
-    console.info('Ingredients: ', ingredients)
-    console.info('Media links:', mediaLinks)
+    const title = values.title
+    const createdRecipe: Recipe = {
+      name: title,
+      ingredients,
+      instructions,
+      portionsQtd,
+      timeToCook,
+      mediaLinks,
+    }
+    sendRecipe(createdRecipe)
   }
 
   function validate(values: Values) {
@@ -78,22 +114,21 @@ export const NewRecipeController: React.FC = () => {
 
     if ({ ...values }.mediaLinkTwo !== null) {
       if ({ ...values }.mediaLinkTwo.length !== 0) {
-        console.info('Two not null', { ...values }.mediaLinkTwo)
         if (!regexUrl.test({ ...values }.mediaLinkTwo)) {
           errors.mediaLinkTwo = 'Link inválido!'
         }
       }
     }
-    console.info({ ...values }.mediaLinkTwo)
 
     if (
       errors.title !== null ||
       errors.mediaLinkOne !== null ||
       errors.mediaLinkTwo != null
-    )
+    ) {
+      console.log(errors.mediaLinkOne)
+      console.log(errors.mediaLinkTwo)
       return errors
-
-    handleFormData(values)
+    }
   }
   return (
     <View className="m-6 flex items-center">
@@ -112,7 +147,6 @@ export const NewRecipeController: React.FC = () => {
             mediaLinkTwo: null,
           }}
           onSubmit={(values: Values) => {
-            console.info(values)
             handleFormData(values)
           }}
           validateOnChange={false}
